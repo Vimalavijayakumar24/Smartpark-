@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Find Parking | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark<small>AI PARKING</small></span>
+        </a>
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link active" href="nearby-parking.html"
+            >⌖ Find Parking</a
+          >
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
+          <a class="nav-link" href="admin.html">⚙ Administration</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">DISCOVER LOCATIONS</span>
+            <h2>Find Parking</h2>
+          </div>
+          <a class="btn btn-primary" href="my-bookings.html">My Bookings</a>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <h1>Find your parking spot.</h1>
+            <p class="muted">
+              Search parking locations and check available spaces.
+            </p>
+          </div>
+
+          <section class="card section-block">
+            <form id="parking-search-form">
+              <label for="parking-search">Location or parking name</label>
+              <div class="search-row">
+                <input
+                  id="parking-search"
+                  name="search"
+                  type="search"
+                  placeholder="Search by location or parking name"
+                />
+                <button class="btn btn-primary" type="submit">Search</button>
+              </div>
+            </form>
+            <button class="btn btn-secondary" id="use-location" type="button">
+              Use my current location
+            </button>
+            <p id="location-message" class="muted small" aria-live="polite">
+              Location access is optional.
+            </p>
+          </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div>
+                <h2>Parking locations</h2>
+                <p class="muted">
+                  Availability will be loaded from the backend when connected.
+                </p>
+              </div>
+            </div>
+
+            <div id="parking-results" class="card-grid">
+              <article class="card">
+                <span class="badge">Preview</span>
+                <h3>SmartPark Locations</h3>
+                <p class="muted">
+                  Connect the parking API to display real locations and
+                  availability.
+                </p>
+                <a class="btn btn-primary" href="parking-details.html"
+                  >View sample details</a
+                >
+              </article>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/parking.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      const locationButton = document.getElementById("use-location");
+      locationButton.addEventListener("click", () => {
+        const message = document.getElementById("location-message");
+
+        if (!navigator.geolocation) {
+          message.textContent =
+            "Your browser does not support location services.";
+          return;
+        }
+
+        message.textContent = "Requesting location permission...";
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            message.textContent =
+              `Location received: ${position.coords.latitude.toFixed(4)}, ` +
+              `${position.coords.longitude.toFixed(4)}. Nearby search requires backend support.`;
+          },
+          () => {
+            message.textContent =
+              "Location unavailable. You can search by name instead.";
+          },
+        );
+      });
+    </script>
+  </body>
+</html>

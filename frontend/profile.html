@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Profile | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link active" href="profile.html">◎ My Profile</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">YOUR ACCOUNT</span>
+            <h2>My Profile</h2>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <h1>Manage your profile.</h1>
+            <p class="muted">Update your personal and vehicle information.</p>
+          </div>
+
+          <section class="card section-block">
+            <h2>Personal information</h2>
+            <form id="profile-form">
+              <label for="name">Full name</label>
+              <input id="name" name="name" autocomplete="name" required />
+
+              <label for="email">Email address</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+
+              <button class="btn btn-primary" type="submit">
+                Save profile
+              </button>
+            </form>
+          </section>
+
+          <section class="card section-block">
+            <h2>Vehicle information</h2>
+            <form id="vehicle-form">
+              <label for="vehicleNumber">Vehicle registration number</label>
+              <input
+                id="vehicleNumber"
+                name="vehicleNumber"
+                placeholder="Enter vehicle registration"
+                required
+              />
+
+              <label for="vehicleType">Vehicle type</label>
+              <select id="vehicleType" name="vehicleType" required>
+                <option value="car">Car</option>
+                <option value="bike">Motorcycle</option>
+                <option value="ev">Electric vehicle</option>
+                <option value="other">Other</option>
+              </select>
+
+              <button class="btn btn-primary" type="submit">
+                Save vehicle
+              </button>
+            </form>
+            <p class="muted small">
+              Updates are saved only when the corresponding backend endpoints
+              are configured.
+            </p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gate Simulation | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link active" href="gate-simulation.html"
+            >⇄ Gate Simulation</a
+          >
+          <a class="nav-link" href="admin.html">⚙ Administration</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">DEMONSTRATION MODE</span>
+            <h2>Gate Simulation</h2>
+          </div>
+          <span class="badge">SIMULATED</span>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <h1>Smart entry control.</h1>
+            <p class="muted">
+              Demonstrate a mock entry or exit event using sample information.
+            </p>
+          </div>
+
+          <section class="card section-block">
+            <h2>Simulate vehicle access</h2>
+            <form id="gate-form">
+              <label for="vehicle-number">Demo vehicle registration</label>
+              <input
+                id="vehicle-number"
+                name="vehicleNumber"
+                placeholder="Example: TN00AB0000"
+                maxlength="20"
+                required
+              />
+
+              <label for="gate-action">Action</label>
+              <select id="gate-action" name="action" required>
+                <option value="entry">Vehicle entry</option>
+                <option value="exit">Vehicle exit</option>
+              </select>
+
+              <button class="btn btn-primary" type="submit">
+                Run simulation
+              </button>
+            </form>
+            <p class="muted small">
+              The simulation does not open a physical gate or authenticate an
+              actual vehicle.
+            </p>
+          </section>
+
+          <section class="card section-block">
+            <h2>Latest simulation result</h2>
+            <div id="gate-result" aria-live="polite">
+              <span class="badge">Waiting</span>
+              <p class="muted">
+                Submit the demo form to generate a simulated event.
+              </p>
+            </div>
+          </section>
+
+          <section class="card section-block">
+            <h2>Recent events</h2>
+            <div id="gate-events">
+              <p class="muted">No simulation events yet.</p>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/gate-simulation.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

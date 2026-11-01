@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Parking Timer | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link active" href="parking-timer.html"
+            >◷ Parking Timer</a
+          >
+          <a class="nav-link" href="extend-parking.html">＋ Extend Parking</a>
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">PARKING SESSION</span>
+            <h2>Parking Timer</h2>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <h1>Keep track of your time.</h1>
+            <p class="muted">
+              The timer uses your confirmed booking's end time.
+            </p>
+          </div>
+
+          <section class="card section-block">
+            <span class="badge">SESSION TIMER</span>
+            <h2 id="timer-status">No active session loaded</h2>
+            <div
+              id="parking-countdown"
+              aria-live="polite"
+              style="
+                font-size: clamp(2.5rem, 8vw, 5rem);
+                font-weight: 700;
+                letter-spacing: 0.04em;
+              "
+            >
+              --:--:--
+            </div>
+            <p id="timer-description" class="muted">
+              Your booking end time will appear here when available.
+            </p>
+            <a class="btn btn-primary" href="my-bookings.html">View bookings</a>
+            <a class="btn btn-secondary" href="extend-parking.html"
+              >Extend parking</a
+            >
+          </section>
+
+          <section class="card section-block">
+            <h2>Demo timer</h2>
+            <p class="muted">
+              For interface testing only. It does not change a real reservation.
+            </p>
+            <button
+              id="start-demo-timer"
+              class="btn btn-secondary"
+              type="button"
+            >
+              Start 5-minute demo
+            </button>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

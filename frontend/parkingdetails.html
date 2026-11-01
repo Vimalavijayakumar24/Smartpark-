@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Parking Details | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark<small>AI PARKING</small></span>
+        </a>
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link active" href="nearby-parking.html"
+            >⌖ Find Parking</a
+          >
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
+          <a class="nav-link" href="admin.html">⚙ Administration</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">LOCATION INFORMATION</span>
+            <h2>Parking Details</h2>
+          </div>
+          <a class="btn btn-secondary" href="nearby-parking.html">← Back</a>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <span class="eyebrow">SMART PARKING NETWORK</span>
+            <h1 id="parking-name">Parking location</h1>
+            <p id="parking-address" class="muted">
+              Location details will appear here.
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <article class="card stat-card">
+              <span class="muted">Available slots</span>
+              <h2 id="available-slots">—</h2>
+            </article>
+            <article class="card stat-card">
+              <span class="muted">Hourly rate</span>
+              <h2 id="hourly-rate">—</h2>
+            </article>
+            <article class="card stat-card">
+              <span class="muted">Status</span>
+              <h2 id="parking-status">Unknown</h2>
+            </article>
+          </div>
+
+          <section class="card section-block">
+            <h2>About this location</h2>
+            <p id="parking-description" class="muted">
+              Parking information will be retrieved when the backend is
+              connected.
+            </p>
+            <p class="muted small">
+              Availability and prices should be confirmed before booking.
+            </p>
+            <a id="book-parking" class="btn btn-primary" href="book-slot.html">
+              Choose a parking slot →
+            </a>
+          </section>
+
+          <section class="section-block">
+            <h2>Parking slot availability</h2>
+            <p class="muted">
+              Select a location to view its slot availability.
+            </p>
+            <div id="details-message" class="card" aria-live="polite">
+              No live parking data loaded yet.
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      (async function loadParkingDetails() {
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+        const message = document.getElementById("details-message");
+
+        if (!id) {
+          message.textContent =
+            "No parking location ID was provided. Choose a location from the parking search page.";
+          return;
+        }
+
+        document.getElementById("book-parking").href =
+          `book-slot.html?id=${encodeURIComponent(id)}`;
+
+        try {
+          const data = await apiRequest(`/parking/${encodeURIComponent(id)}`);
+          const parking = data.location || data;
+
+          document.getElementById("parking-name").textContent =
+            parking.name || "Parking location";
+          document.getElementById("parking-address").textContent =
+            parking.address || "Address unavailable";
+          document.getElementById("available-slots").textContent =
+            parking.availableSlots ?? "—";
+          document.getElementById("hourly-rate").textContent =
+            parking.hourlyRate != null ? `₹${parking.hourlyRate}` : "—";
+          document.getElementById("parking-status").textContent =
+            parking.status || "Available";
+          document.getElementById("parking-description").textContent =
+            parking.description || "Parking information supplied by SmartPark.";
+
+          message.textContent = "Parking details loaded successfully.";
+        } catch (error) {
+          message.textContent =
+            "Could not load live parking details. Confirm that the backend provides GET /parking/:id.";
+          console.error(error);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+:root {
+  /* Main theme */
+  --bg: #f3f6fa;
+  --background: #f3f6fa;
+
+  /* Cards and surfaces */
+  --surface: #ffffff;
+  --surface-alt: #eaf1f6;
+  --card-bg: #ffffff;
+
+  /* Text */
+  --text: #263548;
+  --text-primary: #263548;
+  --muted: #718096;
+  --text-secondary: #718096;
+
+  /* Brand */
+  --primary: #a9d9e8;
+  --primary-dark: #6db8d0;
+  --accent: #78bdd2;
+  --accent-light: #e0f2f7;
+
+  /* Status colors */
+  --success: #c8e6d5;
+  --success-text: #286746;
+
+  --warning: #f6e7bc;
+  --warning-text: #795b16;
+
+  --danger: #f3d1d1;
+  --danger-text: #913d3d;
+
+  /* Borders and shadows */
+  --border: #dee7ef;
+  --border-color: #dee7ef;
+  --shadow: 0 6px 24px rgba(38, 53, 72, 0.06);
+
+  /* Shape */
+  --radius: 12px;
+  --radius-lg: 18px;
+
+  /* Simple Professional Monotone Tokens */
+  --mono-bg: #0d121c;
+  --mono-card: #141b2d;
+  --mono-card-hover: #172035;
+  --mono-border: #222d42;
+  --mono-border-focus: #38bdf8;
+  --mono-input-bg: #090d15;
+  --mono-input-border: #232e44;
+  --mono-text: #f8fafc;
+  --mono-muted: #94a3b8;
+  --mono-subtle: #64748b;
+  --mono-accent: #38bdf8;
+  --mono-accent-hover: #0ea5e9;
+  --mono-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] {
+  --mono-bg: #f1f5f9;
+  --mono-card: #ffffff;
+  --mono-card-hover: #fcfdfe;
+  --mono-border: #e2e8f0;
+  --mono-border-focus: #0f172a;
+  --mono-input-bg: #f8fafc;
+  --mono-input-border: #cbd5e1;
+  --mono-text: #0f172a;
+  --mono-muted: #64748b;
+  --mono-subtle: #94a3b8;
+  --mono-accent: #0f172a;
+  --mono-accent-hover: #1e293b;
+  --mono-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+}

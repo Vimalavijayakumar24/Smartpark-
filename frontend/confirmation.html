@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booking Confirmation | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link active" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link" href="profile.html">◎ My Profile</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">RESERVATION STATUS</span>
+            <h2>Confirmation</h2>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <section class="card section-block">
+            <span class="badge badge-success">Booking response received</span>
+            <h1>You're all set!</h1>
+            <p class="muted">Review the booking information below.</p>
+            <div class="stats-grid">
+              <article class="card stat-card">
+                <span class="muted">Booking reference</span>
+                <h3 id="confirmation-id">—</h3>
+              </article>
+              <article class="card stat-card">
+                <span class="muted">Parking slot</span>
+                <h3 id="confirmation-slot">—</h3>
+              </article>
+              <article class="card stat-card">
+                <span class="muted">Status</span>
+                <h3 id="confirmation-status">Pending verification</h3>
+              </article>
+            </div>
+            <p id="confirmation-message" class="muted" aria-live="polite">
+              Booking information will appear here after the booking API
+              confirms the reservation.
+            </p>
+            <a class="btn btn-primary" href="my-bookings.html"
+              >View my bookings</a
+            >
+            <a class="btn btn-secondary" href="dashboard.html"
+              >Return to dashboard</a
+            >
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      try {
+        const result = JSON.parse(
+          sessionStorage.getItem("smartpark-confirmation") || "null",
+        );
+        const booking = JSON.parse(
+          sessionStorage.getItem("smartpark-pending-booking") || "null",
+        );
+
+        if (result) {
+          const reference =
+            result.bookingId || result._id || result.id || "Received";
+          document.getElementById("confirmation-id").textContent = reference;
+          document.getElementById("confirmation-status").textContent =
+            result.status || result.paymentStatus || "Response received";
+          document.getElementById("confirmation-message").textContent =
+            "The backend returned a response. Check your booking history for the latest reservation status.";
+        }
+
+        if (booking) {
+          document.getElementById("confirmation-slot").textContent =
+            booking.slot || "—";
+        }
+      } catch (error) {
+        console.error("Could not load confirmation.", error);
+      }
+    </script>
+  </body>
+</html>

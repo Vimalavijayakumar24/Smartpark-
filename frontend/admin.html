@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administration | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
+          <a class="nav-link active" href="admin.html">⚙ Administration</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">SYSTEM OVERVIEW</span>
+            <h2>Administration</h2>
+          </div>
+          <button id="refresh-admin" class="btn btn-primary" type="button">
+            Refresh data
+          </button>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <h1>SmartPark operations.</h1>
+            <p class="muted">
+              Overview of locations, parking capacity and reservations.
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <article class="card stat-card">
+              <span class="muted">Parking locations</span>
+              <h2 id="admin-location-count">—</h2>
+            </article>
+            <article class="card stat-card">
+              <span class="muted">Available slots</span>
+              <h2 id="admin-available-count">—</h2>
+            </article>
+            <article class="card stat-card">
+              <span class="muted">Bookings</span>
+              <h2 id="admin-booking-count">—</h2>
+            </article>
+          </div>
+
+          <section class="card section-block">
+            <h2>Parking locations</h2>
+            <div id="admin-location-list">
+              <p class="muted">
+                Location data will appear after the admin API is connected.
+              </p>
+            </div>
+          </section>
+
+          <section class="card section-block">
+            <h2>Recent system events</h2>
+            <div id="admin-events">
+              <p class="muted">No live events loaded.</p>
+            </div>
+          </section>
+
+          <p id="admin-message" class="muted small" aria-live="polite">
+            Live administrative data has not been loaded.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

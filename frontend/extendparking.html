@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extend Parking | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
+          <a class="nav-link active" href="extend-parking.html"
+            >＋ Extend Parking</a
+          >
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+        </nav>
+        <button class="btn btn-secondary" data-logout type="button">
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            data-menu-toggle
+            type="button"
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="eyebrow">MANAGE YOUR SESSION</span>
+            <h2>Extend Parking</h2>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <h1>Need more time?</h1>
+            <p class="muted">
+              Request an extension for an existing reservation.
+            </p>
+          </div>
+
+          <section class="card section-block">
+            <form id="extend-form">
+              <label for="bookingId">Booking reference</label>
+              <input
+                id="bookingId"
+                name="bookingId"
+                required
+                placeholder="Enter your booking reference"
+              />
+
+              <label for="extraHours">Additional time</label>
+              <select id="extraHours" name="extraHours" required>
+                <option value="">Choose extra time</option>
+                <option value="1">1 additional hour</option>
+                <option value="2">2 additional hours</option>
+                <option value="3">3 additional hours</option>
+              </select>
+
+              <button class="btn btn-primary" type="submit">
+                Request extension
+              </button>
+            </form>
+            <p class="muted small">
+              An extension is not confirmed until the backend checks
+              availability and approves it.
+            </p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

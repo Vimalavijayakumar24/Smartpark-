@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | SmartPark AI</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"
+          ><span class="brand-icon">P</span
+          ><span>SmartPark<small>AI PARKING</small></span></a
+        >
+        <nav class="nav-menu" aria-label="Main navigation">
+          <a class="nav-link active" href="dashboard.html">◈ Dashboard</a>
+          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
+          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
+          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
+          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
+          <a class="nav-link" href="admin.html">⚙ Administration</a>
+        </nav>
+        <button class="btn btn-secondary" type="button" data-logout>
+          Sign out
+        </button>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button
+            class="btn btn-secondary"
+            type="button"
+            data-menu-toggle
+            aria-label="Toggle navigation"
+          >
+            ☰
+          </button>
+          <div>
+            <span class="muted small">SMARTPARK AI</span>
+            <h2>Dashboard</h2>
+          </div>
+          <a class="btn btn-primary" href="nearby-parking.html"
+            >+ Find Parking</a
+          >
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow">YOUR PARKING OVERVIEW</span>
+              <h1>Good to see you.</h1>
+              <p class="muted">Your parking journey, all in one place.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="card stat-card">
+              <span class="muted">Active bookings</span>
+              <h2 id="active-bookings">—</h2>
+              <span class="small">Your current reservations</span>
+            </article>
+            <article class="card stat-card">
+              <span class="muted">Available locations</span>
+              <h2 id="available-locations">—</h2>
+              <span class="small">Parking locations</span>
+            </article>
+            <article class="card stat-card">
+              <span class="muted">Parking status</span>
+              <h2>Ready</h2>
+              <span class="small">Check availability before travelling</span>
+            </article>
+          </div>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div>
+                <h2>Explore parking</h2>
+                <p class="muted">Find a location that works for you.</p>
+              </div>
+              <a href="nearby-parking.html">View all →</a>
+            </div>
+            <div id="parking-list" class="card-grid">
+              <article class="card">
+                <h3>Parking locations</h3>
+                <p class="muted">
+                  Connect the backend to load current locations.
+                </p>
+                <a class="btn btn-primary" href="nearby-parking.html"
+                  >Explore locations</a
+                >
+              </article>
+            </div>
+          </section>
+
+          <section class="section-block card">
+            <h2>Quick actions</h2>
+            <div class="action-grid">
+              <a class="btn btn-secondary" href="nearby-parking.html"
+                >Find nearby parking</a
+              >
+              <a class="btn btn-secondary" href="my-bookings.html"
+                >View bookings</a
+              >
+              <a class="btn btn-secondary" href="parking-timer.html"
+                >Check parking timer</a
+              >
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

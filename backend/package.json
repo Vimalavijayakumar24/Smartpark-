@@ -1,0 +1,13 @@
+{
+  "name": "smartpark-backend",
+  "version": "1.0.0",
+  "description": "SmartPark AI Backend API Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["smartpark", "parking", "api", "iot"],
+  "author": "SmartPark Team",
+  "license": "ISC"
+}
