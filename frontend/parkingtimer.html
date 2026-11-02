@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Parking Timer | SmartPark AI</title>
+    <title>Live Parking Timer | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,92 +12,94 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link active" href="parking-timer.html"
-            >◷ Parking Timer</a
-          >
-          <a class="nav-link" href="extend-parking.html">＋ Extend Parking</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">PARKING SESSION</span>
-            <h2>Parking Timer</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">TELEMETRY MONITOR</span>
+              <h2 class="topbar-title" data-i18n="nav_parkingtimer">Parking Timer</h2>
+            </div>
           </div>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Keep track of your time.</h1>
-            <p class="muted">
-              The timer uses your confirmed booking's end time.
-            </p>
+            <div>
+              <h1 data-i18n="nav_parkingtimer">Live Parking Session Timer</h1>
+              <p class="muted">Authoritative server countdown. Automatically persists across browser refreshes.</p>
+            </div>
           </div>
 
-          <section class="card section-block">
-            <span class="badge">SESSION TIMER</span>
-            <h2 id="timer-status">No active session loaded</h2>
-            <div
-              id="parking-countdown"
-              aria-live="polite"
-              style="
-                font-size: clamp(2.5rem, 8vw, 5rem);
-                font-weight: 700;
-                letter-spacing: 0.04em;
-              "
-            >
-              --:--:--
-            </div>
-            <p id="timer-description" class="muted">
-              Your booking end time will appear here when available.
-            </p>
-            <a class="btn btn-primary" href="my-bookings.html">View bookings</a>
-            <a class="btn btn-secondary" href="extend-parking.html"
-              >Extend parking</a
-            >
-          </section>
+          <div style="max-width: 680px; margin: 0 auto;">
+            <div class="card" style="text-align: center; padding: 2.5rem 1.5rem; border-top: 4px solid var(--primary);">
+              <span class="badge badge-success" style="margin-bottom: 0.75rem;" id="timer-status">● Live Session Active</span>
+              <div
+                id="parking-countdown"
+                style="font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 800; font-family: monospace; color: var(--primary); letter-spacing: 0.05em; margin: 1rem 0;"
+              >
+                01:29:40
+              </div>
+              <p id="timer-description" class="muted" style="margin-bottom: 1.5rem;">
+                Countdown reflects your confirmed reservation slot duration.
+              </p>
 
-          <section class="card section-block">
-            <h2>Demo timer</h2>
-            <p class="muted">
-              For interface testing only. It does not change a real reservation.
-            </p>
-            <button
-              id="start-demo-timer"
-              class="btn btn-secondary"
-              type="button"
-            >
-              Start 5-minute demo
-            </button>
-          </section>
+              <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a class="btn btn-primary" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Parking Duration</a>
+                <a class="btn btn-secondary" href="gatesimulation.html">⇄ Gate Barrier Pass</a>
+              </div>
+            </div>
+
+            <!-- Test Countdown Demo Card -->
+            <div class="card" style="margin-top: 1.5rem; padding: 1.25rem; background: var(--surface-alt);">
+              <div class="flex-between">
+                <div>
+                  <strong style="display: block;">Test Countdown Simulation</strong>
+                  <span class="small muted">Trigger a fast 5-minute preview countdown for interface demonstration.</span>
+                </div>
+                <button id="start-demo-timer" class="btn btn-secondary btn-sm" type="button">
+                  Run 5-Min Test
+                </button>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/timer.js"></script>
     <script src="js/auth.js"></script>
   </body>

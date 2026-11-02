@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Find Parking | SmartPark AI</title>
+    <title>Nearby Parking Locations | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,131 +12,106 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
         <a class="brand" href="dashboard.html">
           <span class="brand-icon">P</span>
-          <span>SmartPark<small>AI PARKING</small></span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
         </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link active" href="nearby-parking.html"
-            >⌖ Find Parking</a
-          >
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
-          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
-          <a class="nav-link" href="admin.html">⚙ Administration</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link active" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">DISCOVER LOCATIONS</span>
-            <h2>Find Parking</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">GEOLOCATION DISCOVERY</span>
+              <h2 class="topbar-title" data-i18n="nearby_title">Nearby Locations</h2>
+            </div>
           </div>
-          <a class="btn btn-primary" href="my-bookings.html">My Bookings</a>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Find your parking spot.</h1>
-            <p class="muted">
-              Search parking locations and check available spaces.
-            </p>
+            <div>
+              <h1 data-i18n="nearby_title">Nearby Parking Facilities</h1>
+              <p class="muted" data-i18n="nearby_subtitle">GPS discovery based on your real browser location with accurate distance calculation.</p>
+            </div>
           </div>
 
-          <section class="card section-block">
-            <form id="parking-search-form">
-              <label for="parking-search">Location or parking name</label>
-              <div class="search-row">
-                <input
-                  id="parking-search"
-                  name="search"
-                  type="search"
-                  placeholder="Search by location or parking name"
-                />
-                <button class="btn btn-primary" type="submit">Search</button>
-              </div>
-            </form>
-            <button class="btn btn-secondary" id="use-location" type="button">
-              Use my current location
-            </button>
-            <p id="location-message" class="muted small" aria-live="polite">
-              Location access is optional.
-            </p>
-          </section>
-
-          <section class="section-block">
-            <div class="section-heading">
+          <!-- Geolocation Discovery Control Banner -->
+          <div class="card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
               <div>
-                <h2>Parking locations</h2>
-                <p class="muted">
-                  Availability will be loaded from the backend when connected.
-                </p>
+                <h3 style="margin: 0 0 0.25rem 0;">Browser GPS Location</h3>
+                <div id="gps-status-text" class="small muted">
+                  Click below to allow browser geolocation and calculate exact distances in kilometers.
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <button id="btn-request-gps" class="btn btn-primary" type="button" data-i18n="nearby_detect_btn">
+                  📍 Find Spaces Near Me
+                </button>
+                <button id="btn-fallback-browse" class="btn btn-secondary" type="button">
+                  Browse All Facilities
+                </button>
               </div>
             </div>
 
-            <div id="parking-results" class="card-grid">
-              <article class="card">
-                <span class="badge">Preview</span>
-                <h3>SmartPark Locations</h3>
-                <p class="muted">
-                  Connect the parking API to display real locations and
-                  availability.
-                </p>
-                <a class="btn btn-primary" href="parking-details.html"
-                  >View sample details</a
-                >
-              </article>
+            <!-- Permission Denied Alert Banner -->
+            <div id="gps-denied-alert" class="hidden" style="margin-top: 1rem; padding: 1rem; background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: var(--radius); color: var(--warning-text); font-size: 0.88rem;">
+              <strong style="display: block; margin-bottom: 0.35rem;">⚠️ Geolocation Permission Not Granted</strong>
+              <span data-i18n="nearby_permission_denied">Location access was denied. Please allow location access in your browser or explore registered facilities below.</span>
+              <div style="margin-top: 0.5rem;">
+                <button id="btn-retry-gps" type="button" class="btn btn-secondary btn-sm" data-i18n="nearby_retry_btn">Retry Geolocation</button>
+              </div>
             </div>
-          </section>
+          </div>
+
+          <!-- Parking Facility Cards Grid -->
+          <div class="flex-between" style="margin-bottom: 1rem;">
+            <h3 style="margin: 0;" id="results-heading">Network Parking Decks</h3>
+            <span class="small muted" id="results-count-pill">Showing facilities</span>
+          </div>
+
+          <div id="nearby-results-grid" class="cards-grid">
+            <p class="muted">Loading facilities...</p>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/parking.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      const locationButton = document.getElementById("use-location");
-      locationButton.addEventListener("click", () => {
-        const message = document.getElementById("location-message");
-
-        if (!navigator.geolocation) {
-          message.textContent =
-            "Your browser does not support location services.";
-          return;
-        }
-
-        message.textContent = "Requesting location permission...";
-
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            message.textContent =
-              `Location received: ${position.coords.latitude.toFixed(4)}, ` +
-              `${position.coords.longitude.toFixed(4)}. Nearby search requires backend support.`;
-          },
-          () => {
-            message.textContent =
-              "Location unavailable. You can search by name instead.";
-          },
-        );
-      });
-    </script>
   </body>
 </html>

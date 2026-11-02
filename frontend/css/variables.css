@@ -1,72 +1,153 @@
+/* ==========================================
+   SMARTPARK AI — PROFESSIONAL PASTEL & DARK DESIGN SYSTEM
+   Commercial Smart Parking Management Application
+========================================== */
+
 :root {
-  /* Main theme */
-  --bg: #f3f6fa;
-  --background: #f3f6fa;
+  /* Brand Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Inter', sans-serif;
 
-  /* Cards and surfaces */
-  --surface: #ffffff;
-  --surface-alt: #eaf1f6;
-  --card-bg: #ffffff;
+  /* Color Palette — Light Professional Theme */
+  --bg: #f4f6fa;               /* Soft pale blue-gray pastel background */
+  --bg-subtle: #edf2f7;        /* Secondary subtle surface background */
+  --surface: #ffffff;          /* Pure white card surface */
+  --surface-hover: #f8fafc;    /* Card hover state */
+  --surface-alt: #f1f5f9;      /* Inset sections & table headers */
+  --dropdown-bg: #ffffff;
 
-  /* Text */
-  --text: #263548;
-  --text-primary: #263548;
-  --muted: #718096;
-  --text-secondary: #718096;
+  /* Primary Accent — Deep Navy / Professional Dark Blue */
+  --primary: #0f2744;          /* Deep navy */
+  --primary-hover: #1b3d68;    /* Deep navy hover */
+  --primary-active: #0a1b2f;
+  --primary-light: #e8f0fe;    /* Soft blue tint */
+  --primary-text: #ffffff;     /* Text on primary buttons */
 
-  /* Brand */
-  --primary: #a9d9e8;
-  --primary-dark: #6db8d0;
-  --accent: #78bdd2;
-  --accent-light: #e0f2f7;
+  /* Secondary & Muted Tones — Blue-Gray */
+  --secondary: #475569;
+  --secondary-hover: #334155;
+  --secondary-light: #f1f5f9;
+  --muted: #64748b;            /* Muted supporting text */
+  --subtle: #94a3b8;           /* Placeholders & subtle icons */
+  --text: #1e293b;             /* High contrast dark blue-gray main text */
+  --text-dark: #0f172a;        /* Deep headings text */
 
-  /* Status colors */
-  --success: #c8e6d5;
-  --success-text: #286746;
+  /* Slot & Workflow Status Colors — Explicit SmartPark Spec */
+  --slot-free: #10b981;        /* GREEN: Free / Available */
+  --slot-free-bg: #ecfdf5;
+  --slot-free-border: #059669;
 
-  --warning: #f6e7bc;
-  --warning-text: #795b16;
+  --slot-reserved: #f59e0b;    /* YELLOW/AMBER: Reserved */
+  --slot-reserved-bg: #fffbeb;
+  --slot-reserved-border: #d97706;
 
-  --danger: #f3d1d1;
-  --danger-text: #913d3d;
+  --slot-occupied: #ef4444;    /* RED: Booked or Occupied */
+  --slot-occupied-bg: #fef2f2;
+  --slot-occupied-border: #dc2626;
 
-  /* Borders and shadows */
-  --border: #dee7ef;
-  --border-color: #dee7ef;
-  --shadow: 0 6px 24px rgba(38, 53, 72, 0.06);
+  /* Restrained State Colors */
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --success-text: #065f46;
+  --success-border: #a7f3d0;
 
-  /* Shape */
-  --radius: 12px;
-  --radius-lg: 18px;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #92400e;
+  --warning-border: #fde68a;
 
-  /* Simple Professional Monotone Tokens */
-  --mono-bg: #0d121c;
-  --mono-card: #141b2d;
-  --mono-card-hover: #172035;
-  --mono-border: #222d42;
-  --mono-border-focus: #38bdf8;
-  --mono-input-bg: #090d15;
-  --mono-input-border: #232e44;
-  --mono-text: #f8fafc;
-  --mono-muted: #94a3b8;
-  --mono-subtle: #64748b;
-  --mono-accent: #38bdf8;
-  --mono-accent-hover: #0ea5e9;
-  --mono-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5);
+  --danger: #ef4444;
+  --danger-bg: #fef2f2;
+  --danger-text: #991b1b;
+  --danger-border: #fecaca;
+
+  --info: #0284c7;
+  --info-bg: #f0f9ff;
+  --info-text: #0369a1;
+  --info-border: #bae6fd;
+
+  /* Borders & Dividers */
+  --border: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --border-focus: #0f2744;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 12px 30px rgba(15, 23, 42, 0.09);
+
+  /* Geometry */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  /* Layout Dimensions */
+  --sidebar-width: 250px;
+  --topbar-height: 64px;
+  --container-max-width: 1360px;
 }
 
-[data-theme="light"] {
-  --mono-bg: #f1f5f9;
-  --mono-card: #ffffff;
-  --mono-card-hover: #fcfdfe;
-  --mono-border: #e2e8f0;
-  --mono-border-focus: #0f172a;
-  --mono-input-bg: #f8fafc;
-  --mono-input-border: #cbd5e1;
-  --mono-text: #0f172a;
-  --mono-muted: #64748b;
-  --mono-subtle: #94a3b8;
-  --mono-accent: #0f172a;
-  --mono-accent-hover: #1e293b;
-  --mono-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+/* ==========================================
+   DARK THEME PALETTE — DEEP NAVY / CHARCOAL
+========================================== */
+[data-theme="dark"] {
+  --bg: #0b1320;               /* Deep navy dark background */
+  --bg-subtle: #111b2c;        /* Elevated dark surface */
+  --surface: #152238;          /* Navy slate card surface */
+  --surface-hover: #1c2c48;    /* Surface hover */
+  --surface-alt: #101c30;      /* Dark inset headers */
+  --dropdown-bg: #152238;
+
+  --primary: #2563eb;          /* Vibrant royal blue accent */
+  --primary-hover: #3b82f6;
+  --primary-active: #1d4ed8;
+  --primary-light: #1e293b;
+  --primary-text: #ffffff;
+
+  --secondary: #94a3b8;
+  --secondary-hover: #cbd5e1;
+  --secondary-light: #1e293b;
+  --muted: #94a3b8;
+  --subtle: #64748b;
+  --text: #f1f5f9;
+  --text-dark: #ffffff;
+
+  --slot-free: #10b981;
+  --slot-free-bg: rgba(16, 185, 129, 0.15);
+  --slot-free-border: #10b981;
+
+  --slot-reserved: #f59e0b;
+  --slot-reserved-bg: rgba(245, 158, 11, 0.15);
+  --slot-reserved-border: #f59e0b;
+
+  --slot-occupied: #ef4444;
+  --slot-occupied-bg: rgba(239, 68, 68, 0.15);
+  --slot-occupied-border: #ef4444;
+
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --success-text: #34d399;
+  --success-border: #059669;
+
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --warning-text: #fbbf24;
+  --warning-border: #d97706;
+
+  --danger-bg: rgba(239, 68, 68, 0.15);
+  --danger-text: #f87171;
+  --danger-border: #dc2626;
+
+  --info-bg: rgba(2, 132, 199, 0.15);
+  --info-text: #38bdf8;
+  --info-border: #0284c7;
+
+  --border: #233554;
+  --border-subtle: #1e2d47;
+  --border-focus: #3b82f6;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.55);
 }

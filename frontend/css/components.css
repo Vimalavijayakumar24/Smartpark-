@@ -208,3 +208,354 @@ td {
     transform: translateX(120px);
   }
 }
+
+/* ==========================================
+   TOPBAR TOOLBAR & CONTROLS (HORIZONTAL DESKTOP)
+========================================== */
+
+.topbar-toolbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toolbar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.65rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.select-wrapper:hover {
+  border-color: var(--border-focus);
+}
+
+.toolbar-icon {
+  font-size: 0.95rem;
+  margin-right: 0.4rem;
+}
+
+.toolbar-select {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  padding: 0.2rem 0;
+}
+
+.toolbar-select option {
+  background: var(--dropdown-bg);
+  color: var(--text);
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-focus);
+}
+
+.notif-btn {
+  position: relative;
+  padding: 0.5rem 0.65rem;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--danger);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 750;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.profile-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.dropdown-chevron {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ==========================================
+   DROPDOWN POPUPS (NOTIFICATIONS & PROFILE)
+========================================== */
+
+.notif-dropdown,
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 0.65rem);
+  right: 0;
+  width: 340px;
+  background: var(--dropdown-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  overflow: hidden;
+  animation: dropdown-fade-in 0.2s ease-out;
+}
+
+.profile-dropdown {
+  width: 280px;
+}
+
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notif-header,
+.profile-dropdown-header {
+  padding: 0.85rem 1rem;
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-dropdown-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.profile-dropdown-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.profile-dropdown-details {
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-dropdown-actions {
+  padding: 0.85rem 1rem;
+}
+
+.notif-list {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.notif-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.notif-item:hover {
+  background: var(--surface-hover);
+}
+
+.notif-item.unread {
+  background: var(--primary-light);
+}
+
+.notif-item-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.notif-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-item-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.notif-item-msg {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.35;
+  margin-bottom: 0.3rem;
+}
+
+.notif-item-time {
+  font-size: 0.7rem;
+  color: var(--subtle);
+}
+
+.notif-footer {
+  padding: 0.65rem 1rem;
+  background: var(--surface-alt);
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+/* ==========================================
+   PASSWORD MODAL OVERLAY
+========================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 440px;
+  padding: 1.5rem;
+  animation: modal-pop 0.2s ease-out;
+}
+
+@keyframes modal-pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Status colors for slots as specified:
+   Green: Free
+   Yellow: Reserved
+   Red: Booked or occupied */
+.slot.available,
+.slot.free {
+  background: var(--slot-free-bg) !important;
+  border-color: var(--slot-free-border) !important;
+  color: var(--slot-free) !important;
+}
+
+.slot.reserved {
+  background: var(--slot-reserved-bg) !important;
+  border-color: var(--slot-reserved-border) !important;
+  color: var(--slot-reserved) !important;
+  cursor: not-allowed;
+}
+
+.slot.occupied,
+.slot.booked {
+  background: var(--slot-occupied-bg) !important;
+  border-color: var(--slot-occupied-border) !important;
+  color: var(--slot-occupied) !important;
+  cursor: not-allowed;
+}
+
+.slot.selected {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-hover) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+  .notif-dropdown {
+    width: 300px;
+    right: -60px;
+  }
+  .profile-dropdown {
+    right: 0;
+  }
+}

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Payment | SmartPark AI</title>
+    <title>Secure Payment Checkout | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,100 +12,123 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
         <a class="brand" href="dashboard.html">
           <span class="brand-icon">P</span>
-          <span>SmartPark<small>AI PARKING</small></span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
         </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link active" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link active" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">SECURE CHECKOUT PREVIEW</span>
-            <h2>Payment</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">GATEWAY CHECKOUT</span>
+              <h2 class="topbar-title">Payment Settlement</h2>
+            </div>
           </div>
-          <a class="btn btn-secondary" href="book-slot.html">← Back</a>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
-          <div class="page-heading">
-            <h1>Complete your reservation.</h1>
-            <p class="muted">Review the booking before continuing.</p>
+          <div style="max-width: 600px; margin: 0 auto;">
+            <!-- Simulation Mode Notice -->
+            <div class="card" style="margin-bottom: 1.5rem; background: var(--surface-alt); border-left: 4px solid var(--info); padding: 1rem 1.25rem;">
+              <div class="flex-between">
+                <span class="badge badge-info" style="font-weight: 700;">TEST / SIMULATION ENVIRONMENT</span>
+                <span class="small muted">PCI-DSS Compliant Gateway Adapter</span>
+              </div>
+              <p class="small muted" style="margin: 0.5rem 0 0 0;">
+                Demonstration checkout workflow. Server-side verification is executed without processing real credit cards or bank accounts.
+              </p>
+            </div>
+
+            <!-- Booking Order Summary Card -->
+            <div class="card" style="margin-bottom: 1.5rem; padding: 1.5rem;">
+              <h3 style="margin-top: 0; margin-bottom: 1rem;" data-i18n="book_summary">Order Summary</h3>
+
+              <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem;">
+                <div class="flex-between">
+                  <span class="muted" data-i18n="dash_location">Facility</span>
+                  <strong id="pay-facility-name">VS Mall Parking Complex</strong>
+                </div>
+                <div class="flex-between">
+                  <span class="muted" data-i18n="dash_slot">Assigned Slot</span>
+                  <strong style="color: var(--primary); font-size: 1.15rem;" id="pay-slot-number">A-05</strong>
+                </div>
+                <div class="flex-between">
+                  <span class="muted">Duration</span>
+                  <span id="pay-duration">2 Hours</span>
+                </div>
+                <div class="flex-between" style="border-top: 1px solid var(--border); padding-top: 0.75rem; font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">
+                  <span data-i18n="book_total_amount">Total Payable</span>
+                  <span style="color: var(--primary);" id="pay-total-amount">$12.00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Form -->
+            <div class="card" style="padding: 1.5rem;">
+              <h3 style="margin-top: 0; margin-bottom: 1.25rem;">Select Payment Method</h3>
+
+              <form id="payment-checkout-form">
+                <div class="form-group">
+                  <label for="pay-method-select">Payment Channel</label>
+                  <select id="pay-method-select" class="form-control" style="font-size: 1rem; font-weight: 600;">
+                    <option value="card" selected>💳 Credit / Debit Card (Simulated Gateway)</option>
+                    <option value="upi">⚡ Instant UPI / Net Banking (Simulated)</option>
+                    <option value="wallet">👛 SmartPark Driver Prepaid Wallet</option>
+                  </select>
+                </div>
+
+                <div id="card-fields-box">
+                  <div class="form-group">
+                    <label>Mock Cardholder Name</label>
+                    <input type="text" class="form-control" value="Alex Morgan (Registered Driver)" readonly style="background: var(--surface-alt);" />
+                  </div>
+                  <div class="form-group">
+                    <label>Sandbox Card Reference</label>
+                    <input type="text" class="form-control font-mono" value="•••• •••• •••• 4242" readonly style="background: var(--surface-alt);" />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-payment" style="margin-top: 1.5rem;">
+                  Authorize Payment of <span id="btn-pay-amount">$12.00</span> →
+                </button>
+              </form>
+            </div>
           </div>
-
-          <section class="card section-block">
-            <h2>Booking summary</h2>
-            <p>Selected slot: <strong id="payment-slot">—</strong></p>
-            <p>Duration: <strong id="payment-duration">—</strong></p>
-            <p class="muted small">
-              The final price must be calculated and validated by the backend.
-            </p>
-          </section>
-
-          <section class="card section-block">
-            <span class="badge">DEMO MODE</span>
-            <h2>Payment simulation</h2>
-            <p class="muted">
-              This demo does not process money. Do not enter card numbers, CVVs,
-              banking passwords, or other payment credentials.
-            </p>
-
-            <form id="payment-form">
-              <label for="payment-method">Select a demonstration method</label>
-              <select id="payment-method" name="paymentMethod" required>
-                <option value="demo">Demo payment</option>
-                <option value="cash">Pay at parking location (demo)</option>
-              </select>
-              <button class="btn btn-primary" type="submit">
-                Simulate payment
-              </button>
-              <a class="btn btn-secondary" href="nearby-parking.html">Cancel</a>
-            </form>
-            <p id="payment-message" class="muted small" aria-live="polite"></p>
-          </section>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/payment.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      try {
-        const booking = JSON.parse(
-          sessionStorage.getItem("smartpark-pending-booking") || "null",
-        );
-
-        if (booking) {
-          document.getElementById("payment-slot").textContent =
-            booking.slot || "Selected";
-          document.getElementById("payment-duration").textContent =
-            `${booking.durationHours || "—"} hour(s)`;
-        }
-      } catch (error) {
-        console.error("Unable to read pending booking.", error);
-      }
-    </script>
   </body>
 </html>

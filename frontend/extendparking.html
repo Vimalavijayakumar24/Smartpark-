@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Extend Parking | SmartPark AI</title>
+    <title>Extend Parking Timer | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,83 +12,143 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link active" href="extend-parking.html"
-            >＋ Extend Parking</a
-          >
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link active" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">MANAGE YOUR SESSION</span>
-            <h2>Extend Parking</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">SESSION EXTENSION</span>
+              <h2 class="topbar-title" data-i18n="extend_title">Extend Timer</h2>
+            </div>
           </div>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Need more time?</h1>
-            <p class="muted">
-              Request an extension for an existing reservation.
-            </p>
+            <div>
+              <h1 data-i18n="extend_title">Extend Parking Duration</h1>
+              <p class="muted" data-i18n="extend_subtitle">Add extra hours to your active reservation before it expires.</p>
+            </div>
           </div>
 
-          <section class="card section-block">
-            <form id="extend-form">
-              <label for="bookingId">Booking reference</label>
-              <input
-                id="bookingId"
-                name="bookingId"
-                required
-                placeholder="Enter your booking reference"
-              />
+          <div style="max-width: 680px; margin: 0 auto;">
+            <!-- Active Session Telemetry Card -->
+            <div id="session-card" class="card" style="margin-bottom: 1.5rem; border-left: 4px solid var(--primary); padding: 1.5rem;">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <span class="badge badge-success" id="ext-session-status">● Live Session Active</span>
+                <span class="font-mono small muted" id="ext-pass-code">Code: SP-8421</span>
+              </div>
 
-              <label for="extraHours">Additional time</label>
-              <select id="extraHours" name="extraHours" required>
-                <option value="">Choose extra time</option>
-                <option value="1">1 additional hour</option>
-                <option value="2">2 additional hours</option>
-                <option value="3">3 additional hours</option>
-              </select>
+              <!-- Active Session Information Fields Specified in Section 9 -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+                <div>
+                  <span class="muted small" data-i18n="dash_location">Active Parking Location</span>
+                  <div style="font-weight: 700; font-size: 1.05rem;" id="ext-location-name">VS Mall Parking Complex</div>
+                </div>
+                <div>
+                  <span class="muted small" data-i18n="dash_slot">Slot Number</span>
+                  <div style="font-weight: 800; font-size: 1.25rem; color: var(--primary);" id="ext-slot-number">A-05</div>
+                </div>
+                <div>
+                  <span class="muted small">Start Time</span>
+                  <div style="font-weight: 600;" id="ext-start-time">--:--</div>
+                </div>
+                <div>
+                  <span class="muted small" data-i18n="dash_end_time">Expected End Time</span>
+                  <div style="font-weight: 600;" id="ext-end-time">--:--</div>
+                </div>
+                <div>
+                  <span class="muted small">Remaining Time</span>
+                  <div id="ext-remaining-timer" style="font-size: 1.35rem; font-weight: 800; font-family: monospace; color: var(--primary);">
+                    --:--:--
+                  </div>
+                </div>
+                <div>
+                  <span class="muted small">Hourly Fee & Payment</span>
+                  <div>
+                    <strong id="ext-hourly-rate">$6.00/hr</strong> · <span class="badge badge-success" id="ext-payment-status">Paid</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-              <button class="btn btn-primary" type="submit">
-                Request extension
-              </button>
-            </form>
-            <p class="muted small">
-              An extension is not confirmed until the backend checks
-              availability and approves it.
-            </p>
-          </section>
+            <!-- Extension Form Card -->
+            <div id="extension-form-card" class="card" style="padding: 1.5rem;">
+              <h3 style="margin-top: 0; margin-bottom: 1rem;" data-i18n="extend_choose_hours">Choose Additional Duration</h3>
+
+              <form id="extend-form">
+                <div class="form-group">
+                  <label for="extend-hours" data-i18n="extend_choose_hours">Select Extension Hours</label>
+                  <select id="extend-hours" name="additionalHours" class="form-control" style="font-size: 1.05rem; font-weight: 700;" required>
+                    <option value="1" selected data-i18n="extend_add_1">+1 Hour ($6.00)</option>
+                    <option value="2" data-i18n="extend_add_2">+2 Hours ($12.00)</option>
+                    <option value="3" data-i18n="extend_add_3">+3 Hours ($18.00)</option>
+                  </select>
+                </div>
+
+                <div style="background: var(--surface-alt); padding: 1rem; border-radius: var(--radius); margin: 1.25rem 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+                  <div class="flex-between">
+                    <span class="muted">Conflict Checking</span>
+                    <span class="badge badge-success">✓ Backend Verification Ready</span>
+                  </div>
+                  <div class="flex-between">
+                    <span class="muted">New Projected End Time</span>
+                    <strong id="ext-new-end-time">--:--</strong>
+                  </div>
+                  <div class="flex-between" style="border-top: 1px solid var(--border); padding-top: 0.5rem; font-size: 1.1rem;">
+                    <span class="muted" data-i18n="extend_calc_fee">Additional Fee</span>
+                    <strong style="color: var(--primary);" id="ext-additional-fee">$6.00</strong>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-block btn-lg" type="submit" id="btn-submit-extend" data-i18n="extend_btn">
+                  Pay & Extend Timer →
+                </button>
+              </form>
+            </div>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
+    <script src="js/timer.js"></script>
     <script src="js/auth.js"></script>
   </body>
 </html>

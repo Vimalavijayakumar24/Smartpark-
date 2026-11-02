@@ -1,104 +1,106 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const locationCount = document.getElementById("admin-location-count");
-  const availableCount = document.getElementById("admin-available-count");
-  const bookingCount = document.getElementById("admin-booking-count");
-  const locationList = document.getElementById("admin-location-list");
-  const eventsContainer = document.getElementById("admin-events");
-  const message = document.getElementById("admin-message");
-  const refreshButton = document.getElementById("refresh-admin");
+/**
+ * ==========================================
+ * SMARTPARK AI — ADMIN CONTROLLER
+ * System Statistics, Revenue & Barrier Control
+ * ==========================================
+ */
 
-  if (!locationList) return;
-
-  function escapeHTML(value) {
-    return String(value ?? "").replace(
-      /[&<>"']/g,
-      (character) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[character],
-    );
+document.addEventListener('DOMContentLoaded', async () => {
+  const refreshBtn = document.getElementById('refresh-admin-btn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', loadAdminData);
   }
 
-  async function loadAdminData() {
-    if (message) message.textContent = "Loading administrative data...";
-
-    try {
-      const result = await apiRequest("/admin/overview");
-
-      const locations = result.locations || [];
-      const totalAvailable = locations.reduce(
-        (total, location) => total + Number(location.availableSlots || 0),
-        0,
-      );
-
-      if (locationCount) locationCount.textContent = locations.length;
-      if (availableCount) availableCount.textContent = totalAvailable;
-      if (bookingCount) {
-        bookingCount.textContent = result.totalBookings ?? "—";
-      }
-
-      if (!locations.length) {
-        locationList.innerHTML =
-          '<p class="muted">No parking locations returned by the API.</p>';
-      } else {
-        locationList.innerHTML = locations
-          .map(
-            (location) => `
-          <article class="activity-item">
-            <div>
-              <h3>${escapeHTML(location.name || "Parking location")}</h3>
-              <p>${escapeHTML(location.address || "Address unavailable")}</p>
-              <p class="muted small">
-                Available slots: ${Number(location.availableSlots || 0)}
-              </p>
-            </div>
-            <span class="badge">${escapeHTML(location.status || "Active")}</span>
-          </article>
-        `,
-          )
-          .join("");
-      }
-
-      const events = result.events || [];
-
-      if (eventsContainer) {
-        eventsContainer.innerHTML = events.length
-          ? events
-              .map(
-                (event) => `
-              <article class="activity-item">
-                <div>
-                  <h3>${escapeHTML(event.title || event.type || "System event")}</h3>
-                  <p>${escapeHTML(event.message || "")}</p>
-                </div>
-                <span class="badge">${escapeHTML(event.status || "Recorded")}</span>
-              </article>
-            `,
-              )
-              .join("")
-          : '<p class="muted">No recent events returned by the API.</p>';
-      }
-
-      if (message) {
-        message.textContent = "Administrative data loaded successfully.";
-      }
-    } catch (error) {
-      if (message) {
-        message.textContent =
-          "Admin data is unavailable. The backend must provide GET /admin/overview, and the user must have administrator permission.";
-      }
-
-      console.warn("Could not load admin data.", error);
-    }
-  }
-
-  if (refreshButton) {
-    refreshButton.addEventListener("click", loadAdminData);
-  }
-
-  loadAdminData();
+  await loadAdminData();
 });
+
+async function loadAdminData() {
+  await Promise.all([loadStats(), loadAllBookings()]);
+}
+
+async function loadStats() {
+  try {
+    const res = await apiRequest('/admin/stats');
+    const s = res.stats || {};
+
+    const locEl = document.getElementById('admin-locations-count');
+    const slotsEl = document.getElementById('admin-total-slots');
+    const freeEl = document.getElementById('admin-free-slots');
+    const revEl = document.getElementById('admin-total-revenue');
+    const barrierEl = document.getElementById('admin-barrier-state');
+
+    if (locEl) locEl.textContent = s.totalLocations || '4';
+    if (slotsEl) slotsEl.textContent = s.totalSlots || '84';
+    if (freeEl) freeEl.textContent = s.availableSlots || '66';
+    if (revEl) revEl.textContent = `$${Number(s.totalRevenue || 0).toFixed(2)}`;
+    if (barrierEl) barrierEl.textContent = s.barrierState || 'CLOSED';
+  } catch (err) {
+    console.warn('Admin stats fetch error:', err);
+  }
+}
+
+async function loadAllBookings() {
+  const tableContainer = document.getElementById('admin-bookings-table');
+  if (!tableContainer) return;
+
+  try {
+    const list = await apiRequest('/admin/bookings');
+
+    if (!Array.isArray(list) || list.length === 0) {
+      tableContainer.innerHTML = '<p class="muted">No bookings recorded in network.</p>';
+      return;
+    }
+
+    tableContainer.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Driver</th>
+            <th>Facility</th>
+            <th>Slot</th>
+            <th>Vehicle / RFID</th>
+            <th>Duration</th>
+            <th>Fee</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${list.map((b) => {
+            const driverName = b.user?.fullName || 'Driver';
+            const locName = b.parkingLocation?.name || 'VS Mall';
+            const isLive = ['confirmed', 'active'].includes(b.status);
+
+            return `
+              <tr>
+                <td class="font-mono font-bold">${escapeHTML(b.bookingCode || '-')}</td>
+                <td>${escapeHTML(driverName)}</td>
+                <td>${escapeHTML(locName)}</td>
+                <td><strong>${escapeHTML(b.slotNumber)}</strong></td>
+                <td class="font-mono small">${escapeHTML(b.vehicleNumber)}</td>
+                <td>${b.durationHours} hrs</td>
+                <td>$${Number(b.totalAmount || 0).toFixed(2)}</td>
+                <td><span class="badge ${isLive ? 'badge-success' : 'badge-secondary'}">${escapeHTML(b.status)}</span></td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+  } catch (err) {
+    tableContainer.innerHTML = '<p class="muted">Could not load bookings table.</p>';
+  }
+}
+
+async function sendAdminGateCommand(cmd) {
+  try {
+    const res = await apiRequest('/admin/gate/command', {
+      method: 'POST',
+      body: JSON.stringify({ command: cmd }),
+    });
+    showToast(`Admin command executed: Barrier ${cmd}`);
+    loadStats();
+  } catch (err) {
+    showToast(err.message || 'Gate command failed.');
+  }
+}

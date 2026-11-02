@@ -3,110 +3,276 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gate Simulation | SmartPark AI</title>
+    <title>Smart Barrier Gate & IoT Simulator | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/pages.css" />
+    <style>
+      .barrier-display-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .barrier-scene {
+        position: relative;
+        height: 180px;
+        background: linear-gradient(180deg, var(--surface-alt) 0%, var(--bg-subtle) 100%);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        margin: 1rem 0;
+        display: flex;
+        align-items: flex-end;
+        padding: 1.5rem 2rem;
+        overflow: hidden;
+      }
+      .gate-post {
+        width: 38px;
+        height: 110px;
+        background: #334155;
+        border-radius: 6px 6px 0 0;
+        position: relative;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+        z-index: 2;
+      }
+      .gate-post::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--danger);
+        box-shadow: 0 0 10px var(--danger);
+        transition: background 0.3s, box-shadow 0.3s;
+      }
+      .barrier-scene.open .gate-post::before {
+        background: var(--success);
+        box-shadow: 0 0 14px var(--success);
+      }
+      .barrier-arm {
+        position: absolute;
+        left: 56px;
+        bottom: 78px;
+        width: 240px;
+        height: 12px;
+        background: repeating-linear-gradient(
+          90deg,
+          #dc2626 0,
+          #dc2626 24px,
+          #ffffff 24px,
+          #ffffff 48px
+        );
+        border-radius: 4px;
+        transform-origin: left center;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        z-index: 3;
+      }
+      .barrier-scene.open .barrier-arm {
+        transform: rotate(-78deg);
+      }
+      .barrier-road {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 38px;
+        background: #1e293b;
+        border-top: 3px solid #facc15;
+      }
+      .barrier-road-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        border-top: 2px dashed #ffffff;
+        opacity: 0.5;
+      }
+      .sensor-slot-pill {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.65rem 0.85rem;
+        background: var(--surface-alt);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+    </style>
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link active" href="gate-simulation.html"
-            >⇄ Gate Simulation</a
-          >
-          <a class="nav-link" href="admin.html">⚙ Administration</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link active" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">DEMONSTRATION MODE</span>
-            <h2>Gate Simulation</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">HARDWARE INTEGRATION NODE</span>
+              <h2 class="topbar-title" data-i18n="gate_title">Gate & IoT Simulator</h2>
+            </div>
           </div>
-          <span class="badge">SIMULATED</span>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Smart entry control.</h1>
-            <p class="muted">
-              Demonstrate a mock entry or exit event using sample information.
-            </p>
+            <div>
+              <h1 data-i18n="gate_title">Smart Barrier Gate & IoT Sensor Hub</h1>
+              <p class="muted" data-i18n="gate_subtitle">Hardware simulator for ESP32, RFID scans, ANPR license plate recognition, and ultrasonic sensors.</p>
+            </div>
+            <span class="badge badge-warning" style="padding: 0.4rem 0.8rem;">
+              ● ESP32 Hardware Ready
+            </span>
           </div>
 
-          <section class="card section-block">
-            <h2>Simulate vehicle access</h2>
-            <form id="gate-form">
-              <label for="vehicle-number">Demo vehicle registration</label>
-              <input
-                id="vehicle-number"
-                name="vehicleNumber"
-                placeholder="Example: TN00AB0000"
-                maxlength="20"
-                required
-              />
+          <!-- Animated Servo Boom Barrier Visualizer -->
+          <div class="barrier-display-card">
+            <div class="flex-between">
+              <div>
+                <span class="small muted" style="font-weight: 700; text-transform: uppercase;">Node: GATE_BOOM_01 (VS Mall Main Entrance)</span>
+                <div style="font-size: 0.85rem; color: var(--muted);">Servo Controller: SG90 / MG996R PWM Command Interface</div>
+              </div>
+              <div id="barrier-state-pill" class="badge badge-danger" style="font-size: 0.95rem; font-weight: 800; padding: 0.4rem 0.8rem;">
+                BARRIER CLOSED
+              </div>
+            </div>
 
-              <label for="gate-action">Action</label>
-              <select id="gate-action" name="action" required>
-                <option value="entry">Vehicle entry</option>
-                <option value="exit">Vehicle exit</option>
-              </select>
+            <!-- Visual Scene -->
+            <div id="barrier-scene" class="barrier-scene">
+              <div class="barrier-road">
+                <div class="barrier-road-line"></div>
+              </div>
+              <div class="gate-post"></div>
+              <div class="barrier-arm" id="barrier-arm"></div>
+              <div style="position: absolute; right: 2rem; bottom: 44px; font-size: 0.85rem; background: var(--surface); padding: 0.4rem 0.75rem; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+                📷 ANPR Camera & 📡 RFID Reader Loop
+              </div>
+            </div>
 
-              <button class="btn btn-primary" type="submit">
-                Run simulation
-              </button>
-            </form>
-            <p class="muted small">
-              The simulation does not open a physical gate or authenticate an
-              actual vehicle.
-            </p>
-          </section>
+            <div class="flex-between small muted">
+              <span>Automatic Safety Sensor: Optical Beam Aligned</span>
+              <span id="gate-last-command">Last Command: SYSTEM_INIT</span>
+            </div>
+          </div>
 
-          <section class="card section-block">
-            <h2>Latest simulation result</h2>
-            <div id="gate-result" aria-live="polite">
-              <span class="badge">Waiting</span>
-              <p class="muted">
-                Submit the demo form to generate a simulated event.
+          <!-- 2-Column Split: Gate Access Simulator & Slot Sensor Hub -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <!-- Column 1: Gate Authorization Simulator -->
+            <div class="card">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <h3 style="margin: 0;">Vehicle Entry / Exit Simulator</h3>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-fill-driver-info">
+                  Use My Registered Info
+                </button>
+              </div>
+
+              <form id="gate-access-form">
+                <div class="form-group">
+                  <label for="gate-operation-select">Gate Barrier Action</label>
+                  <select id="gate-operation-select" class="form-control" style="font-weight: 700;">
+                    <option value="entry" selected>Vehicle Entry (Arrival, RFID Scan & Slot Occupation)</option>
+                    <option value="exit">Vehicle Exit (Departure, Fee Settlement & Slot Release)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="sim-rfid-input">RFID Card UID Tag</label>
+                  <input id="sim-rfid-input" type="text" class="form-control font-mono" placeholder="e.g. RF-882194" style="text-transform: uppercase;" required />
+                  <span class="form-hint">Physical 13.56 MHz RFID RC522 card scan.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="sim-plate-input">ANPR License Plate Number</label>
+                  <input id="sim-plate-input" type="text" class="form-control font-mono" placeholder="e.g. SP-EV-8821" style="text-transform: uppercase;" required />
+                  <span class="form-hint">YOLO-based automated optical number plate recognition.</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-trigger-gate" style="margin-top: 1rem;">
+                  Scan & Authorize Gate Barrier →
+                </button>
+              </form>
+
+              <!-- Result Feedback Box -->
+              <div id="gate-decision-box" class="hidden" style="margin-top: 1.25rem; padding: 1rem; border-radius: var(--radius); font-size: 0.88rem;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Column 2: ESP32 Ultrasonic Slot Sensor Simulator -->
+            <div class="card">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <h3 style="margin: 0;">ESP32 Slot Sensors (Deck A)</h3>
+                <span class="badge badge-info">HC-SR04 Nodes</span>
+              </div>
+              <p class="muted small" style="margin-bottom: 1rem;">
+                Simulates ceiling-mounted ultrasonic/IR parking sensors. Toggle each slot below to trigger real-time occupancy updates to the backend:
               </p>
-            </div>
-          </section>
 
-          <section class="card section-block">
-            <h2>Recent events</h2>
-            <div id="gate-events">
-              <p class="muted">No simulation events yet.</p>
+              <div style="display: flex; flex-direction: column; gap: 0.65rem;" id="sensor-nodes-list">
+                <!-- Dynamically generated for slots A-01 to A-05 -->
+              </div>
+
+              <!-- Live Hardware Event Console -->
+              <div style="margin-top: 1.5rem;">
+                <div class="flex-between" style="margin-bottom: 0.5rem;">
+                  <strong style="font-size: 0.85rem;">Hardware Event Console</strong>
+                  <button type="button" class="btn-link small" id="btn-refresh-logs">Refresh</button>
+                </div>
+                <div id="hardware-logs-console" style="background: #09121d; color: #10b981; font-family: monospace; font-size: 0.75rem; padding: 0.85rem; border-radius: var(--radius); height: 140px; overflow-y: auto;">
+                  [IoT] Hardware listener initialized...
+                </div>
+              </div>
             </div>
-          </section>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/gate-simulation.js"></script>
+    <script src="js/topbar.js"></script>
+    <script src="js/gatesimulation.js"></script>
     <script src="js/auth.js"></script>
   </body>
 </html>

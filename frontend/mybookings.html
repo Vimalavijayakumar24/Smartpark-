@@ -12,149 +12,211 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link active" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
-          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link active" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">YOUR RESERVATIONS</span>
-            <h2>My Bookings</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">DRIVER TELEMETRY</span>
+              <h2 class="topbar-title" data-i18n="nav_mybookings">My Bookings</h2>
+            </div>
           </div>
-          <a class="btn btn-primary" href="nearby-parking.html"
-            >+ New booking</a
-          >
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Your parking history.</h1>
-            <p class="muted">
-              Review your reservations and their current status.
-            </p>
+            <div>
+              <h1 data-i18n="nav_mybookings">My Parking Reservations</h1>
+              <p class="muted">Track live countdowns, extend duration, review invoices, or cancel reservations.</p>
+            </div>
+            <a href="bookslot.html" class="btn btn-primary" data-i18n="nav_bookslot">+ New Booking</a>
           </div>
 
-          <section class="card section-block">
-            <label for="booking-filter">Filter bookings</label>
-            <select id="booking-filter">
-              <option value="all">All bookings</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </section>
+          <!-- Filter Toolbar -->
+          <div class="card" style="margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <label for="booking-filter" style="font-weight: 700; margin: 0; font-size: 0.88rem;">Filter by Status:</label>
+                <select id="booking-filter" class="form-control" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.88rem;">
+                  <option value="all" selected>All Bookings</option>
+                  <option value="active">Active & Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
 
-          <section class="section-block">
-            <div id="booking-list" class="card-grid">
-              <article class="card">
-                <h3>No booking data loaded</h3>
-                <p class="muted">
-                  Connect the bookings API to display your reservations.
-                </p>
-                <a class="btn btn-primary" href="nearby-parking.html"
-                  >Find parking</a
-                >
-              </article>
+              <div id="booking-stats-summary" class="small muted">
+                Loaded from backend API
+              </div>
             </div>
-          </section>
-          <p id="booking-message" class="muted" aria-live="polite"></p>
+          </div>
+
+          <!-- Bookings Grid -->
+          <div id="bookings-container" class="cards-grid">
+            <p class="muted">Loading your bookings...</p>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/booking.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/auth.js"></script>
     <script>
-      let allBookings = [];
+      let userBookingsList = [];
 
-      function safeText(value) {
-        return String(value ?? "").replace(
-          /[&<>"']/g,
-          (c) =>
-            ({
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;",
-              "'": "&#39;",
-            })[c],
-        );
+      document.addEventListener('DOMContentLoaded', async () => {
+        const filterSelect = document.getElementById('booking-filter');
+        if (filterSelect) {
+          filterSelect.addEventListener('change', renderFilteredBookings);
+        }
+
+        await fetchBookings();
+      });
+
+      async function fetchBookings() {
+        const container = document.getElementById('bookings-container');
+        try {
+          const list = await apiRequest('/bookings/my');
+          userBookingsList = Array.isArray(list) ? list : [];
+          renderFilteredBookings();
+        } catch (err) {
+          if (container) {
+            container.innerHTML = '<p class="muted">Could not retrieve bookings from the API.</p>';
+          }
+        }
       }
 
-      function renderBookings(filter = "all") {
-        const list = document.getElementById("booking-list");
-        const filtered = allBookings.filter((booking) => {
-          const status = String(booking.status || "active").toLowerCase();
-          return filter === "all" || status === filter;
-        });
+      function renderFilteredBookings() {
+        const container = document.getElementById('bookings-container');
+        const filter = document.getElementById('booking-filter')?.value || 'all';
+        if (!container) return;
 
-        if (!filtered.length) {
-          list.innerHTML =
-            '<article class="card"><h3>No matching bookings</h3><p class="muted">Try another filter or create a new booking.</p></article>';
+        let filtered = userBookingsList;
+        if (filter === 'active') {
+          filtered = userBookingsList.filter((b) => ['confirmed', 'active'].includes(b.status));
+        } else if (filter === 'completed') {
+          filtered = userBookingsList.filter((b) => b.status === 'completed');
+        } else if (filter === 'cancelled') {
+          filtered = userBookingsList.filter((b) => b.status === 'cancelled' || b.status === 'cancelled_late_arrival');
+        }
+
+        const summaryEl = document.getElementById('booking-stats-summary');
+        if (summaryEl) {
+          summaryEl.textContent = `Displaying ${filtered.length} of ${userBookingsList.length} records`;
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+              <p class="muted" style="margin-bottom: 1rem;">No bookings match the selected status.</p>
+              <a href="bookslot.html" class="btn btn-secondary btn-sm">Reserve a Slot →</a>
+            </div>
+          `;
           return;
         }
 
-        list.innerHTML = filtered
-          .map(
-            (booking) => `
-    <article class="card">
-      <span class="badge">${safeText(booking.status || "Active")}</span>
-      <h3>${safeText(booking.parkingName || booking.locationName || "Parking reservation")}</h3>
-      <p>Slot: ${safeText(booking.slot || booking.slotNumber || "—")}</p>
-      <p>Start: ${safeText(booking.startTime || "—")}</p>
-      <p>Duration: ${safeText(booking.durationHours ?? "—")} hour(s)</p>
-      <p>Reference: ${safeText(booking._id || booking.id || "—")}</p>
-    </article>
-  `,
-          )
-          .join("");
+        container.innerHTML = filtered.map((b) => {
+          const locName = b.parkingLocation?.name || 'VS Mall Parking Complex';
+          const isLive = ['confirmed', 'active'].includes(b.status);
+          const startStr = new Date(b.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const endStr = new Date(b.expectedEndTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const dateStr = new Date(b.startTime).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+
+          let badgeClass = 'badge-success';
+          if (b.status === 'active') badgeClass = 'badge-info';
+          else if (b.status === 'completed') badgeClass = 'badge-secondary';
+          else if (b.status.startsWith('cancelled')) badgeClass = 'badge-danger';
+
+          return `
+            <article class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-left: 4px solid ${isLive ? 'var(--primary)' : 'var(--border)'};">
+              <div>
+                <div class="flex-between" style="margin-bottom: 0.65rem;">
+                  <span class="badge ${badgeClass}">${escapeHTML(b.status.toUpperCase())}</span>
+                  <span class="font-mono small" style="font-weight: 700; color: var(--primary);">Code: ${escapeHTML(b.bookingCode || 'SP-PASS')}</span>
+                </div>
+
+                <h3 style="margin: 0 0 0.35rem 0; font-size: 1.15rem;">${escapeHTML(locName)}</h3>
+                <div class="muted small" style="margin-bottom: 0.85rem;">Slot: <strong style="color: var(--primary); font-size: 1.05rem;">${escapeHTML(b.slotNumber)}</strong> · Vehicle: <span class="font-mono">${escapeHTML(b.vehicleNumber)}</span></div>
+
+                <div style="background: var(--surface-alt); padding: 0.75rem; border-radius: var(--radius); margin-bottom: 1rem; font-size: 0.85rem;">
+                  <div class="flex-between" style="margin-bottom: 0.3rem;">
+                    <span class="muted">Date:</span>
+                    <span>${dateStr}</span>
+                  </div>
+                  <div class="flex-between" style="margin-bottom: 0.3rem;">
+                    <span class="muted">Reserved Time:</span>
+                    <span>${startStr} – ${endStr} (${b.durationHours} hrs)</span>
+                  </div>
+                  <div class="flex-between" style="border-top: 1px solid var(--border); padding-top: 0.3rem;">
+                    <span class="muted">Amount:</span>
+                    <strong>$${Number(b.totalAmount || 0).toFixed(2)} (${b.paymentStatus})</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border);">
+                ${isLive ? `
+                  <a href="extendparking.html" class="btn btn-primary btn-sm" style="flex: 1;">◷ Extend Timer</a>
+                  <a href="gatesimulation.html" class="btn btn-secondary btn-sm" title="Simulate entry or exit">⇄ Gate Pass</a>
+                  <button type="button" class="btn btn-secondary btn-sm" style="color: var(--danger);" onclick="cancelBooking('${b._id || b.id}')">Cancel</button>
+                ` : `
+                  <a href="bookslot.html" class="btn btn-secondary btn-sm btn-block">Book Again →</a>
+                `}
+              </div>
+            </article>
+          `;
+        }).join('');
       }
 
-      document
-        .getElementById("booking-filter")
-        .addEventListener("change", (event) => {
-          renderBookings(event.target.value);
-        });
-
-      (async function loadBookings() {
-        try {
-          const result = await apiRequest("/bookings");
-          allBookings = Array.isArray(result) ? result : result.bookings || [];
-          renderBookings(document.getElementById("booking-filter").value);
-          document.getElementById("booking-message").textContent =
-            "Booking data loaded from the backend.";
-        } catch (error) {
-          document.getElementById("booking-message").textContent =
-            "The bookings API is not connected yet.";
-          console.warn(error);
+      async function cancelBooking(bookingId) {
+        if (!confirm('Are you sure you want to cancel this booking? An 80% simulated refund will be processed.')) {
+          return;
         }
-      })();
+
+        try {
+          const res = await apiRequest(`/bookings/${bookingId}/cancel`, { method: 'POST' });
+          showToast(`Booking cancelled. Refund of $${Number(res.refundAmount || 0).toFixed(2)} processed.`);
+          await fetchBookings();
+        } catch (err) {
+          showToast(err.message || 'Cancellation failed.');
+        }
+      }
     </script>
   </body>
 </html>

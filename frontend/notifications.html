@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Notifications | SmartPark AI</title>
+    <title>Notification Center | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,79 +12,244 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link active" href="notifications.html"
-            >♧ Notifications</a
-          >
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">STAY INFORMED</span>
-            <h2>Notifications</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">ALERTS & BROADCASTS</span>
+              <h2 class="topbar-title" data-i18n="nav_notifications">Notification Center</h2>
+            </div>
           </div>
-          <button id="mark-all-read" class="btn btn-secondary" type="button">
-            Mark all read
-          </button>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Your updates.</h1>
-            <p class="muted">
-              Booking updates and parking reminders will appear here.
-            </p>
+            <div>
+              <h1 data-i18n="nav_notifications">Notifications & Alerts</h1>
+              <p class="muted">Live telemetry alerts, gate access events, timer reminders, and phone SMS dispatches.</p>
+            </div>
+            <button id="btn-mark-all-read-page" class="btn btn-secondary" type="button" data-i18n="tb_mark_read">
+              ✓ Mark All Read
+            </button>
           </div>
 
-          <section class="card section-block">
-            <div id="notification-list" class="activity-list">
-              <article class="activity-item">
-                <div>
-                  <h3>Welcome to SmartPark</h3>
-                  <p class="muted">
-                    Your notification centre is ready. Connect the backend to
-                    load your account notifications.
-                  </p>
-                </div>
-                <span class="badge">Demo</span>
-              </article>
+          <!-- Switchable Tabs: In-App Notifications vs SMS Gateway Logs -->
+          <div class="card" style="margin-bottom: 1.5rem; padding: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="tab-in-app" class="btn btn-primary btn-sm" type="button">
+                🔔 In-App Notifications (<span id="in-app-unread-count">0</span>)
+              </button>
+              <button id="tab-sms-logs" class="btn btn-secondary btn-sm" type="button">
+                📱 Simulated SMS Dispatches
+              </button>
             </div>
-            <p
-              id="notification-message"
-              class="muted small"
-              aria-live="polite"
-            ></p>
-          </section>
+          </div>
+
+          <!-- Tab Content 1: In-App Notifications -->
+          <div id="tab-content-in-app">
+            <div id="notifications-list-container" style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <p class="muted">Loading notifications...</p>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: SMS Gateway Logs -->
+          <div id="tab-content-sms" class="hidden">
+            <div class="card" style="margin-bottom: 1rem; padding: 1rem; background: var(--surface-alt);">
+              <span style="font-weight: 700; display: block; margin-bottom: 0.25rem;">📡 SMS Gateway Simulation Environment</span>
+              <p class="small muted" style="margin: 0;">
+                Tracks phone dispatches triggered by booking confirmations, barrier entry/exit, and timer expiration alerts. Ready for Twilio API credentials.
+              </p>
+            </div>
+            <div id="sms-logs-container" style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <p class="muted">Loading SMS logs...</p>
+            </div>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/notifications.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+      let currentTab = 'in-app';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        const tabInApp = document.getElementById('tab-in-app');
+        const tabSms = document.getElementById('tab-sms-logs');
+        const contentInApp = document.getElementById('tab-content-in-app');
+        const contentSms = document.getElementById('tab-content-sms');
+        const markAllBtn = document.getElementById('btn-mark-all-read-page');
+
+        if (tabInApp && tabSms) {
+          tabInApp.addEventListener('click', () => {
+            currentTab = 'in-app';
+            tabInApp.className = 'btn btn-primary btn-sm';
+            tabSms.className = 'btn btn-secondary btn-sm';
+            contentInApp.classList.remove('hidden');
+            contentSms.classList.add('hidden');
+            loadNotifications();
+          });
+
+          tabSms.addEventListener('click', () => {
+            currentTab = 'sms';
+            tabSms.className = 'btn btn-primary btn-sm';
+            tabInApp.className = 'btn btn-secondary btn-sm';
+            contentSms.classList.remove('hidden');
+            contentInApp.classList.add('hidden');
+            loadSmsLogs();
+          });
+        }
+
+        if (markAllBtn) {
+          markAllBtn.addEventListener('click', async () => {
+            try {
+              await apiRequest('/notifications/mark-all-read', { method: 'POST' });
+              showToast('All notifications marked as read.');
+              loadNotifications();
+            } catch (e) {}
+          });
+        }
+
+        await loadNotifications();
+      });
+
+      async function loadNotifications() {
+        const container = document.getElementById('notifications-list-container');
+        const unreadCountEl = document.getElementById('in-app-unread-count');
+        if (!container) return;
+
+        try {
+          const res = await apiRequest('/notifications');
+          const list = res.notifications || [];
+          const unread = list.filter((n) => !n.read).length;
+
+          if (unreadCountEl) unreadCountEl.textContent = unread;
+
+          if (list.length === 0) {
+            container.innerHTML = `
+              <div class="card" style="text-align: center; padding: 2rem;">
+                <p class="muted">You have no notification records at this time.</p>
+              </div>
+            `;
+            return;
+          }
+
+          const lang = getCurrentLanguage();
+
+          container.innerHTML = list.map((n) => {
+            const title = (lang === 'ta' && n.titleTa) ? n.titleTa : n.title;
+            const msg = (lang === 'ta' && n.messageTa) ? n.messageTa : n.message;
+            const timeAgo = formatTimeAgo(n.createdAt);
+
+            return `
+              <div class="card ${!n.read ? 'unread' : ''}" style="border-left: 4px solid ${!n.read ? 'var(--primary)' : 'var(--border)'}; padding: 1.15rem;">
+                <div class="flex-between" style="margin-bottom: 0.35rem;">
+                  <span style="font-weight: 700; font-size: 0.98rem; color: var(--text-dark);">${escapeHTML(title)}</span>
+                  <span class="small muted">${timeAgo}</span>
+                </div>
+                <p style="margin: 0 0 0.5rem 0; font-size: 0.88rem; color: var(--text);">${escapeHTML(msg)}</p>
+                <div class="flex-between">
+                  <span class="badge badge-info small">${escapeHTML(n.category || n.type || 'system')}</span>
+                  ${!n.read ? `
+                    <button type="button" class="btn-link small" onclick="markOneRead('${n._id || n.id}')">Mark Read</button>
+                  ` : '<span class="small muted">Read</span>'}
+                </div>
+              </div>
+            `;
+          }).join('');
+        } catch (err) {
+          container.innerHTML = '<p class="muted">Could not load notifications.</p>';
+        }
+      }
+
+      async function markOneRead(id) {
+        try {
+          await apiRequest(`/notifications/${id}/read`, { method: 'PATCH' });
+          loadNotifications();
+        } catch (e) {}
+      }
+
+      async function loadSmsLogs() {
+        const container = document.getElementById('sms-logs-container');
+        if (!container) return;
+
+        try {
+          const res = await apiRequest('/notifications/sms-logs');
+          const logs = res.logs || [];
+
+          if (logs.length === 0) {
+            container.innerHTML = `
+              <div class="card" style="text-align: center; padding: 2rem;">
+                <p class="muted">No SMS dispatches generated yet. Perform a booking or gate scan to trigger an alert.</p>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = logs.map((sms) => {
+            const statusClass = sms.deliveryStatus === 'delivered' ? 'badge-success' : sms.deliveryStatus === 'simulated' ? 'badge-info' : 'badge-danger';
+            const timeStr = new Date(sms.timestamp).toLocaleTimeString();
+
+            return `
+              <div class="card" style="padding: 1.15rem; border-left: 4px solid var(--info);">
+                <div class="flex-between" style="margin-bottom: 0.5rem;">
+                  <div>
+                    <span class="badge ${statusClass}">${escapeHTML(sms.deliveryStatus.toUpperCase())}</span>
+                    <strong style="margin-left: 0.5rem; font-size: 0.9rem;">To: ${escapeHTML(sms.phone)}</strong>
+                  </div>
+                  <span class="small muted">${timeStr}</span>
+                </div>
+                <div style="background: var(--surface-alt); padding: 0.75rem; border-radius: var(--radius); font-family: monospace; font-size: 0.82rem; margin-bottom: 0.5rem; color: var(--text);">
+                  "${escapeHTML(sms.message)}"
+                </div>
+                <div class="flex-between small muted">
+                  <span>Provider: ${escapeHTML(sms.provider)}</span>
+                  <span class="font-mono">ID: ${escapeHTML(sms.providerMessageId || '-')}</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+        } catch (err) {
+          container.innerHTML = '<p class="muted">Could not load SMS logs.</p>';
+        }
+      }
+    </script>
   </body>
 </html>

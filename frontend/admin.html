@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Administration | SmartPark AI</title>
+    <title>Administration Console | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,90 +12,118 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
-          <a class="nav-link active" href="admin.html">⚙ Administration</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
+          <a class="nav-link active" href="admin.html" data-i18n="nav_admin">⚙ Administration</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">SYSTEM OVERVIEW</span>
-            <h2>Administration</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">NETWORK OPERATIONS</span>
+              <h2 class="topbar-title" data-i18n="nav_admin">Administration Console</h2>
+            </div>
           </div>
-          <button id="refresh-admin" class="btn btn-primary" type="button">
-            Refresh data
-          </button>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>SmartPark operations.</h1>
-            <p class="muted">
-              Overview of locations, parking capacity and reservations.
-            </p>
+            <div>
+              <h1>System Telemetry & Deck Overview</h1>
+              <p class="muted">Live administrative controls, total capacity, financial revenue, and barrier override.</p>
+            </div>
+            <button id="refresh-admin-btn" class="btn btn-primary" type="button">
+              ↻ Refresh Telemetry
+            </button>
           </div>
 
-          <div class="stats-grid">
-            <article class="card stat-card">
-              <span class="muted">Parking locations</span>
-              <h2 id="admin-location-count">—</h2>
+          <!-- Stats Grid -->
+          <div class="stats-grid" style="margin-bottom: 2rem;">
+            <article class="stat-card">
+              <div class="stat-label">Total Facilities</div>
+              <div class="stat-value" id="admin-locations-count">4</div>
+              <div class="stat-foot">Metropolis & VS Mall Deck</div>
             </article>
-            <article class="card stat-card">
-              <span class="muted">Available slots</span>
-              <h2 id="admin-available-count">—</h2>
+
+            <article class="stat-card">
+              <div class="stat-label">Total Parking Capacity</div>
+              <div class="stat-value" id="admin-total-slots">84</div>
+              <div class="stat-foot"><span id="admin-free-slots">66</span> Available Spaces</div>
             </article>
-            <article class="card stat-card">
-              <span class="muted">Bookings</span>
-              <h2 id="admin-booking-count">—</h2>
+
+            <article class="stat-card">
+              <div class="stat-label">Total System Revenue</div>
+              <div class="stat-value" style="color: var(--success);" id="admin-total-revenue">$0.00</div>
+              <div class="stat-foot">Simulated & Live Settled</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-label">Gate Boom Barrier Node</div>
+              <div class="stat-value" style="font-size: 1.35rem;" id="admin-barrier-state">CLOSED</div>
+              <div class="stat-foot">Auto PWM Servo Logic</div>
             </article>
           </div>
 
-          <section class="card section-block">
-            <h2>Parking locations</h2>
-            <div id="admin-location-list">
-              <p class="muted">
-                Location data will appear after the admin API is connected.
-              </p>
+          <!-- Manual Gate Override Banner -->
+          <div class="card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--surface-alt); border-left: 4px solid var(--warning);">
+            <div class="flex-between">
+              <div>
+                <strong style="display: block; font-size: 1rem;">Manual Barrier Gate Override</strong>
+                <span class="small muted">Emergency supervisor controls for barrier boom servo arm.</span>
+              </div>
+              <div style="display: flex; gap: 0.65rem;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="sendAdminGateCommand('OPEN')">
+                  Open Barrier
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="sendAdminGateCommand('CLOSE')">
+                  Close Barrier
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- All Bookings Table -->
+          <section class="card">
+            <h3 style="margin-top: 0; margin-bottom: 1.25rem;">Live Network Reservations</h3>
+            <div id="admin-bookings-table" class="table-wrap">
+              <p class="muted">Loading system bookings...</p>
             </div>
           </section>
-
-          <section class="card section-block">
-            <h2>Recent system events</h2>
-            <div id="admin-events">
-              <p class="muted">No live events loaded.</p>
-            </div>
-          </section>
-
-          <p id="admin-message" class="muted small" aria-live="polite">
-            Live administrative data has not been loaded.
-          </p>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/auth.js"></script>
   </body>

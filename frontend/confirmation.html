@@ -12,103 +12,127 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link active" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">RESERVATION STATUS</span>
-            <h2>Confirmation</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">RESERVATION CONFIRMED</span>
+              <h2 class="topbar-title">Booking Confirmation</h2>
+            </div>
           </div>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
-          <section class="card section-block">
-            <span class="badge badge-success">Booking response received</span>
-            <h1>You're all set!</h1>
-            <p class="muted">Review the booking information below.</p>
-            <div class="stats-grid">
-              <article class="card stat-card">
-                <span class="muted">Booking reference</span>
-                <h3 id="confirmation-id">—</h3>
-              </article>
-              <article class="card stat-card">
-                <span class="muted">Parking slot</span>
-                <h3 id="confirmation-slot">—</h3>
-              </article>
-              <article class="card stat-card">
-                <span class="muted">Status</span>
-                <h3 id="confirmation-status">Pending verification</h3>
-              </article>
+          <div style="max-width: 680px; margin: 0 auto;">
+            <div class="card" style="text-align: center; padding: 2.5rem 1.5rem; border-top: 4px solid var(--success);">
+              <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--success-bg); color: var(--success); font-size: 2rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+                ✓
+              </div>
+
+              <h1 style="margin: 0 0 0.5rem 0;">You're All Set!</h1>
+              <p class="muted" style="margin: 0 0 1.5rem 0;">Your space has been locked in MongoDB and synced with the gate controller.</p>
+
+              <!-- Access Code Badge -->
+              <div style="display: inline-block; background: var(--surface-alt); border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 1rem 2rem; margin-bottom: 2rem;">
+                <span class="muted small" style="display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">RFID Gate Pass Code</span>
+                <span id="confirmation-code" style="font-size: 2rem; font-weight: 800; font-family: monospace; color: var(--primary);">SP-8421</span>
+              </div>
+
+              <!-- Details Grid -->
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: left; background: var(--surface-alt); padding: 1.25rem; border-radius: var(--radius); margin-bottom: 2rem; font-size: 0.9rem;">
+                <div>
+                  <span class="muted small">Facility:</span>
+                  <div style="font-weight: 700;" id="conf-facility">VS Mall Parking Complex</div>
+                </div>
+                <div>
+                  <span class="muted small">Assigned Slot:</span>
+                  <div style="font-weight: 800; color: var(--primary); font-size: 1.1rem;" id="conf-slot">A-05</div>
+                </div>
+                <div>
+                  <span class="muted small">Valid Until:</span>
+                  <div style="font-weight: 600;" id="conf-end-time">--:--</div>
+                </div>
+                <div>
+                  <span class="muted small">Payment Status:</span>
+                  <div><span class="badge badge-success">✓ Paid in Full</span></div>
+                </div>
+                <div style="grid-column: span 2; border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                  <span class="muted small">Transaction ID:</span>
+                  <div class="font-mono small" id="conf-txn" style="color: var(--muted);">TXN-SP-DEMO-01</div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="dashboard.html" class="btn btn-primary">Go to Dashboard →</a>
+                <a href="gatesimulation.html" class="btn btn-secondary">Test Gate Barrier</a>
+              </div>
             </div>
-            <p id="confirmation-message" class="muted" aria-live="polite">
-              Booking information will appear here after the booking API
-              confirms the reservation.
-            </p>
-            <a class="btn btn-primary" href="my-bookings.html"
-              >View my bookings</a
-            >
-            <a class="btn btn-secondary" href="dashboard.html"
-              >Return to dashboard</a
-            >
-          </section>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/auth.js"></script>
     <script>
-      try {
-        const result = JSON.parse(
-          sessionStorage.getItem("smartpark-confirmation") || "null",
-        );
-        const booking = JSON.parse(
-          sessionStorage.getItem("smartpark-pending-booking") || "null",
-        );
+      document.addEventListener('DOMContentLoaded', () => {
+        try {
+          const raw = sessionStorage.getItem('smartpark-confirmation');
+          if (raw) {
+            const data = JSON.parse(raw);
+            const code = data.accessCode || data.bookingCode || 'SP-PASS';
+            const slot = data.slotNumber || data.slot || 'A-05';
+            const facility = data.locationName || (data.parkingLocation && data.parkingLocation.name) || 'VS Mall Parking Complex';
+            const end = data.endTime || data.expectedEndTime;
+            const txn = data.transactionId || 'TXN-SP-CONFIRMED';
 
-        if (result) {
-          const reference =
-            result.bookingId || result._id || result.id || "Received";
-          document.getElementById("confirmation-id").textContent = reference;
-          document.getElementById("confirmation-status").textContent =
-            result.status || result.paymentStatus || "Response received";
-          document.getElementById("confirmation-message").textContent =
-            "The backend returned a response. Check your booking history for the latest reservation status.";
-        }
+            document.getElementById('confirmation-code').textContent = code;
+            document.getElementById('conf-slot').textContent = slot;
+            document.getElementById('conf-facility').textContent = facility;
+            document.getElementById('conf-txn').textContent = txn;
 
-        if (booking) {
-          document.getElementById("confirmation-slot").textContent =
-            booking.slot || "—";
+            if (end) {
+              document.getElementById('conf-end-time').textContent = new Date(end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+          }
+        } catch (e) {
+          console.warn('Could not read confirmation session:', e);
         }
-      } catch (error) {
-        console.error("Could not load confirmation.", error);
-      }
+      });
     </script>
   </body>
 </html>

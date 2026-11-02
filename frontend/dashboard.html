@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | SmartPark AI</title>
+    <title>Driver Dashboard | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,113 +12,197 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Left Sidebar Navigation -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link active" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
-          <a class="nav-link" href="gate-simulation.html">⇄ Gate Simulation</a>
-          <a class="nav-link" href="admin.html">⚙ Administration</a>
+          <a class="nav-link active" href="dashboard.html" data-i18n="nav_dashboard">
+            ◈ Dashboard
+          </a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">
+            ⊞ Book Slot
+          </a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">
+            ◷ Extend Timer
+          </a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">
+            ⌖ Nearby Locations
+          </a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">
+            ▤ My Bookings
+          </a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">
+            ⇄ Gate Simulation
+          </a>
         </nav>
-        <button class="btn btn-secondary" type="button" data-logout>
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Content Area -->
       <main class="main-area">
+        <!-- Topbar with Horizontal Toolbar -->
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            type="button"
-            data-menu-toggle
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="muted small">SMARTPARK AI</span>
-            <h2>Dashboard</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;" data-i18n="dash_eyebrow">SMARTPARK OVERVIEW</span>
+              <h2 class="topbar-title" data-i18n="nav_dashboard">Dashboard</h2>
+            </div>
           </div>
-          <a class="btn btn-primary" href="nearby-parking.html"
-            >+ Find Parking</a
-          >
+
+          <!-- Top-Right Toolbar (Profile, Multilingual, Appearance, Notifications) -->
+          <div class="topbar-actions" id="topbar-toolbar">
+            <!-- Dynamically injected by js/topbar.js -->
+          </div>
         </header>
 
         <section class="page-content">
-          <div class="page-heading">
+          <!-- Hero Welcome Section -->
+          <div class="dashboard-hero">
             <div>
-              <span class="eyebrow">YOUR PARKING OVERVIEW</span>
-              <h1>Good to see you.</h1>
-              <p class="muted">Your parking journey, all in one place.</p>
+              <span class="eyebrow" data-i18n="dash_eyebrow">YOUR PARKING OVERVIEW</span>
+              <h2><span data-i18n="dash_welcome">Welcome back</span>, <span data-user-name>Driver</span>.</h2>
+              <p data-i18n="dash_subtitle">Real-time AI parking telemetry, barrier synchronization, and active countdowns.</p>
+            </div>
+            <div>
+              <a href="bookslot.html" class="btn btn-primary" data-i18n="nav_bookslot">+ Book Slot</a>
             </div>
           </div>
 
-          <div class="stats-grid">
-            <article class="card stat-card">
-              <span class="muted">Active bookings</span>
-              <h2 id="active-bookings">—</h2>
-              <span class="small">Your current reservations</span>
-            </article>
-            <article class="card stat-card">
-              <span class="muted">Available locations</span>
-              <h2 id="available-locations">—</h2>
-              <span class="small">Parking locations</span>
-            </article>
-            <article class="card stat-card">
-              <span class="muted">Parking status</span>
-              <h2>Ready</h2>
-              <span class="small">Check availability before travelling</span>
-            </article>
-          </div>
-
-          <section class="section-block">
-            <div class="section-heading">
-              <div>
-                <h2>Explore parking</h2>
-                <p class="muted">Find a location that works for you.</p>
+          <!-- Active Parking Session Hero Card -->
+          <div id="active-session-container" style="margin-bottom: 2rem;">
+            <div class="card" style="border-left: 4px solid var(--primary); padding: 1.5rem;">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span class="badge badge-success">● LIVE SESSION</span>
+                  <span class="muted small" id="active-pass-code">Code: SP-8421</span>
+                </div>
+                <div id="active-status-badge">
+                  <span class="badge badge-info" data-i18n="status_active">Active Parked</span>
+                </div>
               </div>
-              <a href="nearby-parking.html">View all →</a>
-            </div>
-            <div id="parking-list" class="card-grid">
-              <article class="card">
-                <h3>Parking locations</h3>
-                <p class="muted">
-                  Connect the backend to load current locations.
-                </p>
-                <a class="btn btn-primary" href="nearby-parking.html"
-                  >Explore locations</a
-                >
-              </article>
-            </div>
-          </section>
 
-          <section class="section-block card">
-            <h2>Quick actions</h2>
-            <div class="action-grid">
-              <a class="btn btn-secondary" href="nearby-parking.html"
-                >Find nearby parking</a
-              >
-              <a class="btn btn-secondary" href="my-bookings.html"
-                >View bookings</a
-              >
-              <a class="btn btn-secondary" href="parking-timer.html"
-                >Check parking timer</a
-              >
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; align-items: center;">
+                <!-- Countdown Clock -->
+                <div>
+                  <div class="stat-label" data-i18n="dash_timer">Parking Timer</div>
+                  <div id="active-timer-display" style="font-size: 2.2rem; font-weight: 800; font-family: monospace; color: var(--primary);">
+                    01:29:40
+                  </div>
+                  <div id="active-timer-note" class="small muted">Countdown based on server end time</div>
+                </div>
+
+                <!-- Location & Slot -->
+                <div>
+                  <div class="stat-label" data-i18n="dash_location">Parking Location</div>
+                  <div id="active-location-name" style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark);">
+                    VS Mall Parking Complex
+                  </div>
+                  <div class="small muted">
+                    <span data-i18n="dash_slot">Slot Number</span>: <strong id="active-slot-number" style="color: var(--primary);">A-05</strong>
+                  </div>
+                </div>
+
+                <!-- End Time & Fee -->
+                <div>
+                  <div class="stat-label" data-i18n="dash_end_time">Expected End Time</div>
+                  <div id="active-end-time" style="font-size: 1.05rem; font-weight: 600;">
+                    --:--
+                  </div>
+                  <div class="small muted">
+                    <span data-i18n="dash_fee">Current Fee</span>: <strong id="active-total-fee">$12.00</strong> (<span id="active-payment-status" class="badge badge-success">Paid</span>)
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <a href="extendparking.html" class="btn btn-primary btn-sm" data-i18n="nav_extendtimer">
+                    ◷ Extend Timer
+                  </a>
+                  <a href="gatesimulation.html" class="btn btn-secondary btn-sm" data-i18n="nav_gatesimulation">
+                    ⇄ Gate Simulation
+                  </a>
+                </div>
+              </div>
             </div>
-          </section>
+          </div>
+
+          <!-- Quick Stats Cards Grid -->
+          <div class="stats-grid" style="margin-bottom: 2rem;">
+            <article class="stat-card">
+              <div class="stat-label" data-i18n="dash_active_session">Active Bookings</div>
+              <div class="stat-value" id="active-bookings">1</div>
+              <div class="stat-foot">Real-time monitored</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-label">Available Facilities</div>
+              <div class="stat-value" id="available-locations">4</div>
+              <div class="stat-foot">VS Mall, Metro Hub & more</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-label">Vehicle Registration</div>
+              <div class="stat-value" style="font-size: 1.35rem;" data-user-vehicle>SP-EV-8821</div>
+              <div class="stat-foot">ANPR camera verified</div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-label">RFID Access Tag</div>
+              <div class="stat-value font-mono" style="font-size: 1.35rem;" id="stat-user-rfid">RF-882194</div>
+              <div class="stat-foot">Barrier pass ready</div>
+            </article>
+          </div>
+
+          <!-- 2-Column Split: Nearby Facilities & Recent Booking History -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <!-- Left: Nearby / Available Facilities -->
+            <section class="card">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <h3 style="margin: 0;" data-i18n="dash_nearby_quick">Nearby Facilities</h3>
+                <a href="nearbyparking.html" class="small" style="font-weight: 600;" data-i18n="nav_nearbylocations">Find Nearby GPS →</a>
+              </div>
+              <div id="dashboard-facilities-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <p class="muted small">Loading network facilities...</p>
+              </div>
+            </section>
+
+            <!-- Right: Recent Booking History -->
+            <section class="card">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <h3 style="margin: 0;" data-i18n="dash_recent_history">Recent Booking History</h3>
+                <a href="mybookings.html" class="small" style="font-weight: 600;" data-i18n="dash_view_all_history">View All →</a>
+              </div>
+              <div id="dashboard-history-list">
+                <p class="muted small">Loading past bookings...</p>
+              </div>
+            </section>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Core Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/auth.js"></script>
   </body>

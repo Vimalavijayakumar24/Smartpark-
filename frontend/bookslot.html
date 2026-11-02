@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Book a Slot | SmartPark AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Parking Slot | SmartPark AI</title>
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -12,229 +12,207 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar -->
       <aside class="sidebar">
         <a class="brand" href="dashboard.html">
           <span class="brand-icon">P</span>
-          <span>SmartPark<small>AI PARKING</small></span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
         </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link active" href="nearby-parking.html"
-            >⌖ Find Parking</a
-          >
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="parking-timer.html">◷ Parking Timer</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">
+            ◈ Dashboard
+          </a>
+          <a class="nav-link active" href="bookslot.html" data-i18n="nav_bookslot">
+            ⊞ Book Slot
+          </a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">
+            ◷ Extend Timer
+          </a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">
+            ⌖ Nearby Locations
+          </a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">
+            ▤ My Bookings
+          </a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">
+            ⇄ Gate Simulation
+          </a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <div class="flex-between small muted" style="margin-bottom: 0.5rem;">
+            <span data-user-name>Driver</span>
+            <span class="badge badge-info font-mono" data-user-vehicle>Vehicle</span>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">RESERVE YOUR SPACE</span>
-            <h2>Book a Slot</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;" data-i18n="book_summary">PARKING RESERVATION</span>
+              <h2 class="topbar-title" data-i18n="book_title">Book Slot</h2>
+            </div>
           </div>
-          <a class="btn btn-secondary" href="nearby-parking.html">Cancel</a>
+
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Choose your parking slot.</h1>
-            <p class="muted">
-              Select an available slot and choose your parking duration.
-            </p>
+            <div>
+              <h1 data-i18n="book_title">Reserve a Parking Space</h1>
+              <p class="muted" data-i18n="book_subtitle">Select a facility like VS Mall, choose your preferred slot, and finalize payment.</p>
+            </div>
           </div>
 
-          <section class="card section-block">
-            <h2>Slot legend</h2>
-            <div class="action-grid">
-              <span class="badge badge-success">Available</span>
-              <span class="badge badge-danger">Occupied</span>
-              <span class="badge badge-warning">Reserved</span>
-              <span class="badge">Selected</span>
+          <!-- Location Selector Bar -->
+          <div class="card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+              <div style="flex: 1; min-width: 260px;">
+                <label for="location-select" style="font-weight: 700; margin-bottom: 0.35rem; display: block;" data-i18n="book_select_facility">
+                  Select Parking Facility
+                </label>
+                <select id="location-select" class="form-control" style="width: 100%; font-size: 1rem; font-weight: 600;">
+                  <option value="loc_vs_mall" selected>VS Mall Parking Complex (Cross-Cut Rd)</option>
+                  <option value="loc_metro_1">Metro Hub Central Garage (Downtown)</option>
+                  <option value="loc_plaza_2">City Center Plaza Parking (Market St)</option>
+                  <option value="loc_tech_3">Tech Park Deck B (Innovation Way)</option>
+                </select>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div>
+                  <span class="small muted" style="display: block;" data-i18n="book_hourly_rate">Hourly Rate</span>
+                  <strong style="font-size: 1.25rem; color: var(--primary);" id="display-rate">$6.00/hr</strong>
+                </div>
+                <div>
+                  <span class="small muted" style="display: block;">Live Vacancy</span>
+                  <span class="badge badge-success" id="display-available-count">18 Free</span>
+                </div>
+              </div>
             </div>
-          </section>
+          </div>
 
-          <section class="card section-block">
-            <h2>Parking layout</h2>
-            <p class="muted">Entrance ↓</p>
-            <div id="slot-grid" class="slot-grid">
-              <button
-                class="slot"
-                data-slot="A1"
-                type="button"
-                aria-pressed="false"
-              >
-                A1
-              </button>
-              <button
-                class="slot"
-                data-slot="A2"
-                type="button"
-                aria-pressed="false"
-              >
-                A2
-              </button>
-              <button
-                class="slot occupied"
-                data-slot="A3"
-                type="button"
-                disabled
-              >
-                A3
-              </button>
-              <button
-                class="slot"
-                data-slot="A4"
-                type="button"
-                aria-pressed="false"
-              >
-                A4
-              </button>
-              <button
-                class="slot reserved"
-                data-slot="A5"
-                type="button"
-                disabled
-              >
-                A5
-              </button>
-              <button
-                class="slot"
-                data-slot="A6"
-                type="button"
-                aria-pressed="false"
-              >
-                A6
-              </button>
-              <button
-                class="slot"
-                data-slot="B1"
-                type="button"
-                aria-pressed="false"
-              >
-                B1
-              </button>
-              <button
-                class="slot occupied"
-                data-slot="B2"
-                type="button"
-                disabled
-              >
-                B2
-              </button>
-              <button
-                class="slot"
-                data-slot="B3"
-                type="button"
-                aria-pressed="false"
-              >
-                B3
-              </button>
-              <button
-                class="slot"
-                data-slot="B4"
-                type="button"
-                aria-pressed="false"
-              >
-                B4
-              </button>
-              <button
-                class="slot"
-                data-slot="B5"
-                type="button"
-                aria-pressed="false"
-              >
-                B5
-              </button>
-              <button
-                class="slot"
-                data-slot="B6"
-                type="button"
-                aria-pressed="false"
-              >
-                B6
-              </button>
+          <!-- Visible Status Legend -->
+          <div class="card" style="margin-bottom: 1.5rem; padding: 0.85rem 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; font-size: 0.85rem;">
+              <span style="font-weight: 700;">Status Legend:</span>
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--slot-free); display: inline-block;"></span>
+                <span data-i18n="slot_free">Green: Free (Available)</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--slot-reserved); display: inline-block;"></span>
+                <span data-i18n="slot_reserved">Yellow: Reserved</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--slot-occupied); display: inline-block;"></span>
+                <span data-i18n="slot_occupied">Red: Booked or Occupied</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--primary); display: inline-block;"></span>
+                <span data-i18n="slot_selected">Blue: Selected</span>
+              </div>
             </div>
-            <p class="muted small">
-              Demo layout only; confirm availability with the backend before
-              deployment.
-            </p>
-          </section>
+          </div>
 
-          <section class="card section-block">
-            <h2>Booking details</h2>
-            <p>Selected slot: <strong id="selected-slot-label">None</strong></p>
+          <!-- Main Layout Grid: Interactive Slot Map + Booking Configuration -->
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: start;">
+            <!-- Left: Interactive Parking Slot Layout -->
+            <div class="card">
+              <div class="flex-between" style="margin-bottom: 1rem;">
+                <h3 style="margin: 0;">Interactive Deck Layout — Level 1</h3>
+                <span class="small muted">Click an available green space to select</span>
+              </div>
 
-            <form id="booking-form">
-              <label for="startTime">Start date and time</label>
-              <input
-                id="startTime"
-                name="startTime"
-                type="datetime-local"
-                required
-              />
+              <!-- Slot Matrix -->
+              <div id="slot-grid" class="slot-grid" style="grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+                <p class="muted">Loading parking slots...</p>
+              </div>
 
-              <label for="durationHours">Parking duration (hours)</label>
-              <select id="durationHours" name="durationHours" required>
-                <option value="">Choose duration</option>
-                <option value="1">1 hour</option>
-                <option value="2">2 hours</option>
-                <option value="3">3 hours</option>
-                <option value="4">4 hours</option>
-                <option value="6">6 hours</option>
-                <option value="8">8 hours</option>
-              </select>
+              <div style="background: var(--surface-alt); border-radius: var(--radius); padding: 0.85rem; font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 0.5rem;">
+                <span>ℹ️</span>
+                <span>Slots with ⚡ denote EV Charging station capabilities. Occupied slots are continuously monitored by ESP32 sensors.</span>
+              </div>
+            </div>
 
-              <button class="btn btn-primary" type="submit">
-                Continue to payment →
-              </button>
-            </form>
-          </section>
+            <!-- Right: Booking Form & Pricing -->
+            <div class="card">
+              <h3 style="margin-top: 0; margin-bottom: 1.25rem;" data-i18n="book_summary">Booking Summary</h3>
+
+              <form id="booking-form">
+                <!-- Selected Slot Indicator -->
+                <div class="form-group">
+                  <label data-i18n="dash_slot">Selected Slot</label>
+                  <div style="padding: 0.75rem 1rem; background: var(--surface-alt); border-radius: var(--radius); border: 1px dashed var(--border); font-size: 1.15rem; font-weight: 800; color: var(--primary);">
+                    <span id="display-selected-slot">None Selected</span>
+                  </div>
+                </div>
+
+                <!-- Start Time Selection -->
+                <div class="form-group">
+                  <label for="booking-start-time" data-i18n="book_start_time">Booking Start Time</label>
+                  <input id="booking-start-time" name="startTime" type="datetime-local" class="form-control" />
+                  <span class="form-hint">Leave default for immediate arrival.</span>
+                </div>
+
+                <!-- Duration Selection -->
+                <div class="form-group">
+                  <label for="booking-duration" data-i18n="book_duration">Booking Duration (Hours)</label>
+                  <select id="booking-duration" name="durationHours" class="form-control" required>
+                    <option value="1">1 Hour</option>
+                    <option value="2" selected>2 Hours (Standard)</option>
+                    <option value="3">3 Hours</option>
+                    <option value="4">4 Hours</option>
+                    <option value="6">6 Hours</option>
+                    <option value="8">8 Hours (Full Day)</option>
+                  </select>
+                </div>
+
+                <!-- Cost Breakdown -->
+                <div style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.85rem 0; margin: 1rem 0; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.88rem;">
+                  <div class="flex-between">
+                    <span class="muted" data-i18n="book_hourly_rate">Rate</span>
+                    <span id="summary-rate-display">$6.00 / hr</span>
+                  </div>
+                  <div class="flex-between">
+                    <span class="muted">Grace Arrival Window</span>
+                    <span class="badge badge-info">30 Minutes</span>
+                  </div>
+                  <div class="flex-between" style="font-size: 1.15rem; font-weight: 800; color: var(--text-dark); margin-top: 0.25rem;">
+                    <span data-i18n="book_total_amount">Total Amount</span>
+                    <span id="display-total-fee" style="color: var(--primary);">$12.00</span>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-booking-btn" data-i18n="book_proceed_payment">
+                  Confirm & Pay →
+                </button>
+              </form>
+            </div>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/parking.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/booking.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-      const selectedLabel = document.getElementById("selected-slot-label");
-
-      function refreshSelectedSlot() {
-        selectedLabel.textContent =
-          sessionStorage.getItem("smartpark-selected-slot") || "None";
-      }
-
-      document
-        .getElementById("slot-grid")
-        .addEventListener("click", (event) => {
-          if (event.target.matches("[data-slot]") && !event.target.disabled) {
-            refreshSelectedSlot();
-          }
-        });
-
-      const startInput = document.getElementById("startTime");
-      const now = new Date();
-      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      startInput.min = now.toISOString().slice(0, 16);
-      startInput.value = now.toISOString().slice(0, 16);
-
-      refreshSelectedSlot();
-    </script>
   </body>
 </html>

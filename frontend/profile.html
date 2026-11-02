@@ -12,100 +12,246 @@
   </head>
   <body>
     <div class="app-layout">
+      <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <a class="brand" href="dashboard.html"
-          ><span class="brand-icon">P</span
-          ><span>SmartPark<small>AI PARKING</small></span></a
-        >
+        <a class="brand" href="dashboard.html">
+          <span class="brand-icon">P</span>
+          <span>SmartPark <small>AI PARKING SYSTEM</small></span>
+        </a>
+
         <nav class="nav-menu" aria-label="Main navigation">
-          <a class="nav-link" href="dashboard.html">◈ Dashboard</a>
-          <a class="nav-link" href="nearby-parking.html">⌖ Find Parking</a>
-          <a class="nav-link" href="my-bookings.html">▤ My Bookings</a>
-          <a class="nav-link" href="notifications.html">♧ Notifications</a>
-          <a class="nav-link active" href="profile.html">◎ My Profile</a>
+          <a class="nav-link" href="dashboard.html" data-i18n="nav_dashboard">◈ Dashboard</a>
+          <a class="nav-link" href="bookslot.html" data-i18n="nav_bookslot">⊞ Book Slot</a>
+          <a class="nav-link" href="extendparking.html" data-i18n="nav_extendtimer">◷ Extend Timer</a>
+          <a class="nav-link" href="nearbyparking.html" data-i18n="nav_nearbylocations">⌖ Nearby Locations</a>
+          <a class="nav-link" href="mybookings.html" data-i18n="nav_mybookings">▤ My Bookings</a>
+          <a class="nav-link" href="gatesimulation.html" data-i18n="nav_gatesimulation">⇄ Gate Simulation</a>
         </nav>
-        <button class="btn btn-secondary" data-logout type="button">
-          Sign out
-        </button>
+
+        <div class="sidebar-bottom">
+          <button class="btn btn-secondary btn-sm btn-block" type="button" data-logout data-i18n="nav_signout">
+            Sign out
+          </button>
+        </div>
       </aside>
 
+      <!-- Main Area -->
       <main class="main-area">
         <header class="topbar">
-          <button
-            class="btn btn-secondary"
-            data-menu-toggle
-            type="button"
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <div>
-            <span class="eyebrow">YOUR ACCOUNT</span>
-            <h2>My Profile</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="menu-toggle-btn" type="button" data-menu-toggle aria-label="Toggle navigation">
+              ☰
+            </button>
+            <div>
+              <span class="eyebrow" style="margin-bottom: 0;">ACCOUNT MANAGEMENT</span>
+              <h2 class="topbar-title" data-i18n="prof_title">Driver Profile</h2>
+            </div>
           </div>
+          <div class="topbar-actions" id="topbar-toolbar"></div>
         </header>
 
         <section class="page-content">
           <div class="page-heading">
-            <h1>Manage your profile.</h1>
-            <p class="muted">Update your personal and vehicle information.</p>
+            <div>
+              <h1 data-i18n="prof_title">Driver Profile & Credentials</h1>
+              <p class="muted" data-i18n="prof_subtitle">Manage your personal contact info, registered RFID tag, and change password.</p>
+            </div>
           </div>
 
-          <section class="card section-block">
-            <h2>Personal information</h2>
-            <form id="profile-form">
-              <label for="name">Full name</label>
-              <input id="name" name="name" autocomplete="name" required />
+          <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- 1. Personal Contact Information Card -->
+            <div class="card">
+              <h3 style="margin-top: 0; margin-bottom: 1.25rem;" data-i18n="prof_personal">Personal Information</h3>
 
-              <label for="email">Email address</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                required
-              />
+              <form id="profile-form">
+                <div class="form-group">
+                  <label for="profile-name" data-i18n="prof_fullname">Full Name</label>
+                  <input id="profile-name" name="fullName" type="text" class="form-control" required />
+                </div>
 
-              <button class="btn btn-primary" type="submit">
-                Save profile
+                <div class="form-group">
+                  <label for="profile-email" data-i18n="prof_email">Email Address</label>
+                  <input id="profile-email" name="email" type="email" class="form-control" disabled style="background-color: var(--surface-alt);" />
+                  <span class="form-hint">Email address cannot be modified after registration.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="profile-phone" data-i18n="prof_phone">Phone Number</label>
+                  <input id="profile-phone" name="phone" type="tel" class="form-control" required />
+                </div>
+
+                <button class="btn btn-primary" type="submit" id="btn-save-profile" data-i18n="prof_save_btn">
+                  Save Personal Details
+                </button>
+              </form>
+            </div>
+
+            <!-- 2. Vehicle & RFID Credentials Card -->
+            <div class="card">
+              <h3 style="margin-top: 0; margin-bottom: 1.25rem;" data-i18n="prof_vehicle_rfid">Vehicle & RFID Credentials</h3>
+
+              <form id="vehicle-form">
+                <div class="form-group">
+                  <label for="profile-vehicle" data-i18n="prof_vehicle_num">Vehicle Registration Number</label>
+                  <input id="profile-vehicle" name="vehicleNumber" type="text" class="form-control font-mono" style="text-transform: uppercase;" required />
+                  <span class="form-hint">Used for ANPR optical license plate cameras at barrier gates.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="profile-rfid" data-i18n="prof_rfid_num">RFID Card / Tag Identifier</label>
+                  <input id="profile-rfid" name="rfid" type="text" class="form-control font-mono" style="text-transform: uppercase;" required />
+                  <span class="form-hint">Physical 13.56MHz RFID card UID tapped at entrance and exit.</span>
+                </div>
+
+                <button class="btn btn-primary" type="submit" id="btn-save-vehicle">
+                  Update Vehicle & RFID Credentials
+                </button>
+              </form>
+            </div>
+
+            <!-- 3. Secure Password Management Card -->
+            <div class="card">
+              <h3 style="margin-top: 0; margin-bottom: 1.25rem;" data-i18n="prof_password_manage">Password Management</h3>
+
+              <form id="password-change-page-form">
+                <div class="form-group">
+                  <label for="page-curr-pass" data-i18n="prof_curr_password">Current Password</label>
+                  <input id="page-curr-pass" type="password" class="form-control" required placeholder="Enter current password" />
+                </div>
+
+                <div class="form-group">
+                  <label for="page-new-pass" data-i18n="prof_new_password">New Password</label>
+                  <input id="page-new-pass" type="password" class="form-control" minlength="6" required placeholder="Minimum 6 characters" />
+                </div>
+
+                <div class="form-group">
+                  <label for="page-confirm-pass" data-i18n="prof_confirm_new_password">Confirm New Password</label>
+                  <input id="page-confirm-pass" type="password" class="form-control" minlength="6" required placeholder="Confirm new password" />
+                </div>
+
+                <button class="btn btn-secondary" type="submit" id="btn-change-password-submit" data-i18n="prof_update_password_btn">
+                  Update Password
+                </button>
+              </form>
+            </div>
+
+            <!-- 4. Session & Sign Out Card -->
+            <div class="card" style="border: 1px dashed var(--danger-border); background: var(--danger-bg);">
+              <h3 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--danger-text);">Authentication Session</h3>
+              <p class="small muted" style="margin-bottom: 1rem;">Terminate your active token and driver session across this browser.</p>
+              <button class="btn btn-danger btn-block" type="button" data-logout data-i18n="nav_signout">
+                Sign Out of SmartPark AI
               </button>
-            </form>
-          </section>
-
-          <section class="card section-block">
-            <h2>Vehicle information</h2>
-            <form id="vehicle-form">
-              <label for="vehicleNumber">Vehicle registration number</label>
-              <input
-                id="vehicleNumber"
-                name="vehicleNumber"
-                placeholder="Enter vehicle registration"
-                required
-              />
-
-              <label for="vehicleType">Vehicle type</label>
-              <select id="vehicleType" name="vehicleType" required>
-                <option value="car">Car</option>
-                <option value="bike">Motorcycle</option>
-                <option value="ev">Electric vehicle</option>
-                <option value="other">Other</option>
-              </select>
-
-              <button class="btn btn-primary" type="submit">
-                Save vehicle
-              </button>
-            </form>
-            <p class="muted small">
-              Updates are saved only when the corresponding backend endpoints
-              are configured.
-            </p>
-          </section>
+            </div>
+          </div>
         </section>
       </main>
     </div>
 
+    <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/topbar.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Load initial profile data
+        try {
+          const profile = await apiRequest('/auth/me');
+          if (profile) {
+            document.getElementById('profile-name').value = profile.fullName || profile.name || '';
+            document.getElementById('profile-email').value = profile.email || '';
+            document.getElementById('profile-phone').value = profile.phone || '';
+            document.getElementById('profile-vehicle').value = profile.vehicleNumber || '';
+            document.getElementById('profile-rfid').value = profile.rfid || '';
+          }
+        } catch (e) {
+          console.warn('Profile load failed:', e);
+        }
+
+        // Handle Personal Info Update
+        const profileForm = document.getElementById('profile-form');
+        if (profileForm) {
+          profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('profile-name').value;
+            const phone = document.getElementById('profile-phone').value;
+            const btn = document.getElementById('btn-save-profile');
+
+            if (btn) btn.disabled = true;
+            try {
+              await apiRequest('/auth/me', {
+                method: 'PATCH',
+                body: JSON.stringify({ fullName, phone }),
+              });
+              showToast('Personal information updated successfully!');
+              fetchUserProfile();
+            } catch (err) {
+              showToast(err.message || 'Update failed.');
+            } finally {
+              if (btn) btn.disabled = false;
+            }
+          });
+        }
+
+        // Handle Vehicle & RFID Update
+        const vehicleForm = document.getElementById('vehicle-form');
+        if (vehicleForm) {
+          vehicleForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const vehicleNumber = document.getElementById('profile-vehicle').value;
+            const rfid = document.getElementById('profile-rfid').value;
+            const btn = document.getElementById('btn-save-vehicle');
+
+            if (btn) btn.disabled = true;
+            try {
+              await apiRequest('/auth/me/vehicle', {
+                method: 'PATCH',
+                body: JSON.stringify({ vehicleNumber, rfid }),
+              });
+              showToast('Vehicle and RFID credentials updated!');
+              fetchUserProfile();
+            } catch (err) {
+              showToast(err.message || 'Vehicle update failed.');
+            } finally {
+              if (btn) btn.disabled = false;
+            }
+          });
+        }
+
+        // Handle Password Change Form
+        const passForm = document.getElementById('password-change-page-form');
+        if (passForm) {
+          passForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('page-curr-pass').value;
+            const newPassword = document.getElementById('page-new-pass').value;
+            const confirmPassword = document.getElementById('page-confirm-pass').value;
+            const btn = document.getElementById('btn-change-password-submit');
+
+            if (newPassword !== confirmPassword) {
+              showToast('New passwords do not match. Please verify.');
+              return;
+            }
+
+            if (btn) btn.disabled = true;
+            try {
+              await apiRequest('/auth/change-password', {
+                method: 'POST',
+                body: JSON.stringify({ currentPassword, newPassword }),
+              });
+              showToast('Password successfully changed!');
+              passForm.reset();
+            } catch (err) {
+              showToast(err.message || 'Password update failed.');
+            } finally {
+              if (btn) btn.disabled = false;
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
