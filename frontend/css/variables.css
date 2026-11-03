@@ -1,153 +1,210 @@
 /* ==========================================
-   SMARTPARK AI — PROFESSIONAL PASTEL & DARK DESIGN SYSTEM
-   Commercial Smart Parking Management Application
+   SMARTPARK AI — MODERN HIGH-CONTRAST DESIGN SYSTEM
+   Commercial-Grade Smart Parking Management Application
 ========================================== */
 
 :root {
-  /* Brand Typography */
+  /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-display: 'Inter', sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
-  /* Color Palette — Light Professional Theme */
-  --bg: #f4f6fa;               /* Soft pale blue-gray pastel background */
-  --bg-subtle: #edf2f7;        /* Secondary subtle surface background */
-  --surface: #ffffff;          /* Pure white card surface */
-  --surface-hover: #f8fafc;    /* Card hover state */
-  --surface-alt: #f1f5f9;      /* Inset sections & table headers */
+  /* Default Modern Multi-Color Palette (Warm White, Beige, Emerald Green, Tech Blue, Charcoal Black) */
+  --bg: #fbf9f5;
+  --bg-gradient: #fbf9f5;
+  --bg-subtle: #f5f2eb;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-hover: #faf9f6;
+  --surface-alt: #f5efe6;
   --dropdown-bg: #ffffff;
 
-  /* Primary Accent — Deep Navy / Professional Dark Blue */
-  --primary: #0f2744;          /* Deep navy */
-  --primary-hover: #1b3d68;    /* Deep navy hover */
-  --primary-active: #0a1b2f;
-  --primary-light: #e8f0fe;    /* Soft blue tint */
-  --primary-text: #ffffff;     /* Text on primary buttons */
+  /* Primary Tech Blue */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-active: #1e40af;
+  --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --primary-gradient-hover: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --primary-light: #eff6ff;
+  --primary-text: #ffffff;
+  --primary-glow: 0 4px 15px rgba(37, 99, 235, 0.25);
 
-  /* Secondary & Muted Tones — Blue-Gray */
+  /* Secondary & Neutral Charcoal/Black Tones */
   --secondary: #475569;
-  --secondary-hover: #334155;
-  --secondary-light: #f1f5f9;
-  --muted: #64748b;            /* Muted supporting text */
-  --subtle: #94a3b8;           /* Placeholders & subtle icons */
-  --text: #1e293b;             /* High contrast dark blue-gray main text */
-  --text-dark: #0f172a;        /* Deep headings text */
+  --secondary-bg: #f5efe6;
+  --secondary-hover: #e8e2d5;
+  --secondary-light: #faf6f0;
+  --muted: #475569;
+  --subtle: #64748b;
+  --text: #0f172a;
+  --text-dark: #020617;
+  --text-light: #64748b;
 
-  /* Slot & Workflow Status Colors — Explicit SmartPark Spec */
-  --slot-free: #10b981;        /* GREEN: Free / Available */
+  /* Emerald Green Status Colors */
+  --slot-free: #10b981;
   --slot-free-bg: #ecfdf5;
-  --slot-free-border: #059669;
+  --slot-free-border: #10b981;
+  --slot-free-glow: 0 0 12px rgba(16, 185, 129, 0.25);
 
-  --slot-reserved: #f59e0b;    /* YELLOW/AMBER: Reserved */
-  --slot-reserved-bg: #fffbeb;
-  --slot-reserved-border: #d97706;
+  --slot-reserved: #f59e0b;
+  --slot-reserved-bg: #fef3c7;
+  --slot-reserved-border: #f59e0b;
+  --slot-reserved-glow: 0 0 12px rgba(245, 158, 11, 0.25);
 
-  --slot-occupied: #ef4444;    /* RED: Booked or Occupied */
+  --slot-occupied: #ef4444;
   --slot-occupied-bg: #fef2f2;
-  --slot-occupied-border: #dc2626;
+  --slot-occupied-border: #ef4444;
+  --slot-occupied-glow: 0 0 12px rgba(239, 68, 68, 0.25);
 
-  /* Restrained State Colors */
+  /* Alert & Badge States */
   --success: #10b981;
-  --success-bg: #ecfdf5;
-  --success-text: #065f46;
-  --success-border: #a7f3d0;
+  --success-bg: rgba(16, 185, 129, 0.14);
+  --success-text: #34d399;
+  --success-border: #059669;
 
   --warning: #f59e0b;
-  --warning-bg: #fffbeb;
-  --warning-text: #92400e;
-  --warning-border: #fde68a;
+  --warning-bg: rgba(245, 158, 11, 0.14);
+  --warning-text: #fbbf24;
+  --warning-border: #d97706;
 
   --danger: #ef4444;
-  --danger-bg: #fef2f2;
-  --danger-text: #991b1b;
-  --danger-border: #fecaca;
+  --danger-bg: rgba(239, 68, 68, 0.14);
+  --danger-text: #f87171;
+  --danger-border: #dc2626;
 
-  --info: #0284c7;
-  --info-bg: #f0f9ff;
-  --info-text: #0369a1;
-  --info-border: #bae6fd;
+  --info: #06b6d4;
+  --info-bg: rgba(6, 182, 212, 0.14);
+  --info-text: #38bdf8;
+  --info-border: #0284c7;
 
-  /* Borders & Dividers */
-  --border: #e2e8f0;
-  --border-subtle: #cbd5e1;
-  --border-focus: #0f2744;
+  /* Borders & Focus Rings */
+  --border: #e8e2d5;
+  --border-subtle: #f0ebe1;
+  --border-focus: #2563eb;
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.15);
 
-  /* Shadows */
+  /* Shadows with Depth */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 6px 18px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 12px 30px rgba(15, 23, 42, 0.09);
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 20px rgba(15, 23, 42, 0.07);
+  --shadow-lg: 0 14px 32px rgba(15, 23, 42, 0.09);
+  --shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
 
-  /* Geometry */
-  --radius-sm: 6px;
-  --radius: 10px;
-  --radius-lg: 14px;
+  /* Legacy & Theme Aliases */
+  --line: var(--border);
+  --cyan: #0284c7;
+  --green: #10b981;
+  --surface-2: var(--surface-hover);
+  --surface-3: var(--surface-elevated);
+  --transition: 0.18s ease;
+
+  /* Monotone Legacy Compatibility Aliases (Warm Multi-Color Standard) */
+  --mono-bg: #fbf9f5;
+  --mono-card: #ffffff;
+  --mono-card-elevated: #ffffff;
+  --mono-border: #e8e2d5;
+  --mono-border-focus: #2563eb;
+  --mono-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+  --mono-accent: #2563eb;
+  --mono-text: #0f172a;
+  --mono-muted: #475569;
+  --mono-input-bg: #ffffff;
+  --mono-input-border: #e8e2d5;
+
+  /* Geometry & Layout */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
   --radius-full: 9999px;
-
-  /* Layout Dimensions */
-  --sidebar-width: 250px;
-  --topbar-height: 64px;
+  --sidebar-width: 256px;
+  --topbar-height: 68px;
   --container-max-width: 1360px;
 }
 
 /* ==========================================
-   DARK THEME PALETTE — DEEP NAVY / CHARCOAL
+   LIGHT MODE ADAPTATION (IF TOGGLED)
 ========================================== */
-[data-theme="dark"] {
-  --bg: #0b1320;               /* Deep navy dark background */
-  --bg-subtle: #111b2c;        /* Elevated dark surface */
-  --surface: #152238;          /* Navy slate card surface */
-  --surface-hover: #1c2c48;    /* Surface hover */
-  --surface-alt: #101c30;      /* Dark inset headers */
-  --dropdown-bg: #152238;
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-gradient: radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+                 radial-gradient(circle at 90% 90%, rgba(99, 102, 241, 0.06) 0%, transparent 40%),
+                 #f8fafc;
+  --bg-subtle: #f1f5f9;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-hover: #f8fafc;
+  --surface-alt: #f1f5f9;
+  --dropdown-bg: #ffffff;
 
-  --primary: #2563eb;          /* Vibrant royal blue accent */
-  --primary-hover: #3b82f6;
-  --primary-active: #1d4ed8;
-  --primary-light: #1e293b;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-active: #1e40af;
+  --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --primary-gradient-hover: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --primary-light: #eff6ff;
   --primary-text: #ffffff;
+  --primary-glow: 0 4px 15px rgba(37, 99, 235, 0.25);
 
-  --secondary: #94a3b8;
-  --secondary-hover: #cbd5e1;
-  --secondary-light: #1e293b;
-  --muted: #94a3b8;
-  --subtle: #64748b;
-  --text: #f1f5f9;
-  --text-dark: #ffffff;
+  --secondary: #475569;
+  --secondary-bg: #f1f5f9;
+  --secondary-hover: #e2e8f0;
+  --secondary-light: #f8fafc;
+  --muted: #64748b;
+  --subtle: #94a3b8;
+  --text: #0f172a;
+  --text-dark: #020617;
+  --text-light: #64748b;
 
   --slot-free: #10b981;
-  --slot-free-bg: rgba(16, 185, 129, 0.15);
+  --slot-free-bg: #ecfdf5;
   --slot-free-border: #10b981;
+  --slot-free-glow: 0 0 12px rgba(16, 185, 129, 0.2);
 
   --slot-reserved: #f59e0b;
-  --slot-reserved-bg: rgba(245, 158, 11, 0.15);
+  --slot-reserved-bg: #fffbeb;
   --slot-reserved-border: #f59e0b;
+  --slot-reserved-glow: 0 0 12px rgba(245, 158, 11, 0.2);
 
   --slot-occupied: #ef4444;
-  --slot-occupied-bg: rgba(239, 68, 68, 0.15);
+  --slot-occupied-bg: #fef2f2;
   --slot-occupied-border: #ef4444;
+  --slot-occupied-glow: 0 0 12px rgba(239, 68, 68, 0.2);
 
-  --success-bg: rgba(16, 185, 129, 0.15);
-  --success-text: #34d399;
-  --success-border: #059669;
+  --success-bg: #ecfdf5;
+  --success-text: #065f46;
+  --success-border: #a7f3d0;
 
-  --warning-bg: rgba(245, 158, 11, 0.15);
-  --warning-text: #fbbf24;
-  --warning-border: #d97706;
+  --warning-bg: #fffbeb;
+  --warning-text: #92400e;
+  --warning-border: #fde68a;
 
-  --danger-bg: rgba(239, 68, 68, 0.15);
-  --danger-text: #f87171;
-  --danger-border: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-text: #991b1b;
+  --danger-border: #fecaca;
 
-  --info-bg: rgba(2, 132, 199, 0.15);
-  --info-text: #38bdf8;
-  --info-border: #0284c7;
+  --info-bg: #f0f9ff;
+  --info-text: #0369a1;
+  --info-border: #bae6fd;
 
-  --border: #233554;
-  --border-subtle: #1e2d47;
-  --border-focus: #3b82f6;
+  --border: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --border-focus: #2563eb;
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.2);
 
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.55);
+  --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 4px 10px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 40px -8px rgba(15, 23, 42, 0.12);
+
+  --mono-bg: #f8fafc;
+  --mono-card: #ffffff;
+  --mono-card-elevated: #ffffff;
+  --mono-border: #e2e8f0;
+  --mono-border-focus: #2563eb;
+  --mono-shadow: 0 16px 40px -8px rgba(15, 23, 42, 0.12);
+  --mono-accent: #2563eb;
+  --mono-text: #0f172a;
+  --mono-muted: #64748b;
+  --mono-input-bg: #f8fafc;
+  --mono-input-border: #cbd5e1;
 }

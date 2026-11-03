@@ -75,6 +75,16 @@ async function loadActiveSession() {
   } catch (err) {
     console.warn('[Dashboard] Active booking fetch failed:', err);
     if (activeCountEl) activeCountEl.textContent = '0';
+    if (container) {
+      container.innerHTML = `
+        <div class="card" style="text-align: center; padding: 2.2rem 1.5rem; background: var(--surface);">
+          <div style="font-size: 2.4rem; margin-bottom: 0.6rem;">🅿️</div>
+          <h3 style="margin: 0 0 0.5rem 0; color: var(--text-dark);">No active parking session currently running</h3>
+          <p class="muted small" style="margin: 0 0 1.25rem 0;">Reserve an available space in advance across 4 metropolitan locations.</p>
+          <a href="bookslot.html" class="btn btn-primary">+ Reserve a Slot Now</a>
+        </div>
+      `;
+    }
   }
 }
 

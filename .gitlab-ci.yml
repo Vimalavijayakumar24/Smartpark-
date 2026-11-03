@@ -1,0 +1,33 @@
+# GitLab CI/CD Pipeline Configuration for SmartPark MERN
+image: node:20-alpine
+
+stages:
+  - test
+  - build
+
+cache:
+  paths:
+    - backend/node_modules/
+    - client/node_modules/
+
+# 1. Run Automated Backend Integration Tests
+test_backend:
+  stage: test
+  script:
+    - cd backend
+    - npm ci || npm install
+    - npm test
+  variables:
+    NODE_ENV: "test"
+
+# 2. Build React Single Page Application Client
+build_client:
+  stage: build
+  script:
+    - cd client
+    - npm ci || npm install
+    - npm run build
+  artifacts:
+    paths:
+      - client/dist/
+    expire_in: 1 week

@@ -1,25 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Monotone Theme Switcher (Dark / Light Monotone) ---
+  // --- Theme Switcher (High-Contrast Dark / Light) ---
   const themeToggle = document.getElementById("theme-toggle");
   const savedTheme = localStorage.getItem("smartpark-theme") || "dark";
 
   if (savedTheme === "light") {
     document.documentElement.setAttribute("data-theme", "light");
   } else {
-    document.documentElement.removeAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", "dark");
   }
 
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       const isLight = document.documentElement.getAttribute("data-theme") === "light";
-      if (isLight) {
-        document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("smartpark-theme", "dark");
-        showToast("Switched to Dark Monotone style");
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-        localStorage.setItem("smartpark-theme", "light");
-        showToast("Switched to Light Monotone style");
+      const nextTheme = isLight ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", nextTheme);
+      localStorage.setItem("smartpark-theme", nextTheme);
+      localStorage.setItem("smartpark_theme", nextTheme);
+      if (typeof showToast === "function") {
+        showToast(`Theme: ${nextTheme === "dark" ? "Modern Dark" : "Clean Light"}`);
       }
     });
   }
@@ -32,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     togglePasswordBtn.addEventListener("click", () => {
       const isPassword = passwordInput.getAttribute("type") === "password";
       passwordInput.setAttribute("type", isPassword ? "text" : "password");
-      
+
       const eyeShow = togglePasswordBtn.querySelector(".eye-show");
       const eyeHide = togglePasswordBtn.querySelector(".eye-hide");
       if (eyeShow && eyeHide) {
@@ -54,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (emailInput && passwordInput) {
         emailInput.value = "user@smartpark.ai";
         passwordInput.value = "password123";
-        showToast("Demo credentials filled!");
+        showToast("Demo driver credentials filled!");
         emailInput.focus();
       }
     });
@@ -89,30 +87,35 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify({ email, password }),
         });
 
+        if (result.token) {
+          localStorage.setItem("smartpark_token", result.token);
+        }
+
         sessionStorage.setItem(
           "smartpark-user",
-          JSON.stringify(result.user || { email, name: email.split("@")[0] }),
+          JSON.stringify(result.user || { email, name: email.split("@")[0] })
         );
         showToast("Login successful! Redirecting...");
         setTimeout(() => {
           location.href = "dashboard.html";
         }, 500);
       } catch (error) {
-        console.warn("Backend API request failed, checking offline demo mode:", error);
-
-        // Resilient fallback: If backend server is offline, allow demo session
-        const demoUser = {
-          id: "usr_" + Date.now().toString(36),
-          name: email.split("@")[0].replace(/[._-]/g, " "),
-          email,
-          role: email.includes("admin") ? "admin" : "driver",
-        };
-
-        sessionStorage.setItem("smartpark-user", JSON.stringify(demoUser));
-        showToast("Signed in! (Connecting to dashboard...)");
-        setTimeout(() => {
-          location.href = "dashboard.html";
-        }, 600);
+        console.error("Backend login error:", error);
+        // Strictly reject invalid credentials - Never allow login without registering in MongoDB!
+        const errorMsg = error.message || "Invalid email or password. Please register an account first.";
+        showToast(errorMsg);
+        
+        // Render visible error banner on the login card
+        let errBanner = document.getElementById("auth-error-banner");
+        if (!errBanner) {
+          errBanner = document.createElement("div");
+          errBanner.id = "auth-error-banner";
+          errBanner.className = "alert alert-error";
+          errBanner.style.cssText = "background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.885rem; font-weight: 600;";
+          loginForm.prepend(errBanner);
+        }
+        errBanner.textContent = "Authentication Error: " + errorMsg;
+        return;
       } finally {
         if (submitBtn) {
           setTimeout(() => {
@@ -124,17 +127,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- 7-Field Registration Form Handler ---
   if (registerForm) {
     registerForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       const formData = new FormData(registerForm);
-      const name = String(formData.get("name") || "").trim();
-      const email = String(formData.get("email") || "").trim();
+      const fullName = String(formData.get("fullName") || formData.get("name") || "").trim();
+      const email = String(formData.get("email") || "").trim().toLowerCase();
+      const phone = String(formData.get("phone") || formData.get("phoneNumber") || "").trim();
+      const vehicleNumber = String(formData.get("vehicleNumber") || "").trim().toUpperCase();
+      const rfid = String(formData.get("rfid") || formData.get("rfidNumber") || "").trim().toUpperCase();
       const password = String(formData.get("password") || "").trim();
+      const confirmPassword = String(formData.get("confirmPassword") || "").trim();
 
-      if (!name || !email || !password) {
-        showToast("Please complete all registration fields.");
+      // Client-side validations for all 7 mandatory fields
+      if (!fullName || !email || !phone || !vehicleNumber || !rfid || !password || !confirmPassword) {
+        showToast("Please fill in all 7 mandatory fields.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match. Please verify your password.");
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast("Password must be at least 6 characters long.");
         return;
       }
 
@@ -144,26 +163,35 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        await apiRequest("/auth/register", {
+        const result = await apiRequest("/auth/register", {
           method: "POST",
-          body: JSON.stringify({ name, email, password }),
+          body: JSON.stringify({
+            fullName,
+            email,
+            phone,
+            vehicleNumber,
+            rfid,
+            password,
+            confirmPassword,
+          }),
         });
 
-        showToast("Registration successful! Redirecting to login...");
+        if (result.token) {
+          localStorage.setItem("smartpark_token", result.token);
+        }
+
+        showToast(result.message || "Account created successfully! Redirecting...");
         setTimeout(() => {
           location.href = "login.html";
-        }, 700);
+        }, 800);
       } catch (error) {
-        console.warn("Backend register API offline, falling back:", error);
-        showToast("Registration saved! Please log in.");
-        setTimeout(() => {
-          location.href = "login.html";
-        }, 700);
+        console.error("Backend register error:", error);
+        showToast(error.message || "Registration failed. Please check your details.");
       } finally {
         if (submitBtn) {
           setTimeout(() => {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = "<span>Create account →</span>";
+            submitBtn.innerHTML = "<span>Create Account →</span>";
           }, 1000);
         }
       }
@@ -179,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("Backend logout unavailable.", error);
       }
 
+      localStorage.removeItem("smartpark_token");
       sessionStorage.removeItem("smartpark-user");
       location.href = "login.html";
     });

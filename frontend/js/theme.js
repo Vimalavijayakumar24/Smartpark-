@@ -8,7 +8,7 @@
 const THEME_STORAGE_KEY = 'smartpark_theme';
 
 function getStoredTheme() {
-  return localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+  return localStorage.getItem(THEME_STORAGE_KEY) || 'light';
 }
 
 function applyTheme(theme) {

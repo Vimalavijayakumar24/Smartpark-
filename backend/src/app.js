@@ -94,14 +94,23 @@ app.post('/api/payments/verify', async (req, res, next) => {
   }
 });
 
-// Serve frontend static files directly for unified single-server deployment
-const frontendPath = path.join(__dirname, '../../frontend');
-app.use(express.static(frontendPath));
+// Serve React Single Page Application (client/dist) or legacy frontend
+const fs = require('fs');
+const clientDistPath = path.join(__dirname, '../../client/dist');
+const legacyFrontendPath = path.join(__dirname, '../../frontend');
 
-// Fallback route to login or dashboard
-app.get('/', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'login.html'));
-});
+if (fs.existsSync(clientDistPath)) {
+  app.use(express.static(clientDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+} else {
+  app.use(express.static(legacyFrontendPath));
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(legacyFrontendPath, 'login.html'));
+  });
+}
 
 // Centralized error handling
 app.use(notFound);

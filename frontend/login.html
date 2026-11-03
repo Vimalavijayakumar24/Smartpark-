@@ -3,196 +3,504 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0d121c" />
-    <title>Login | SmartPark AI</title>
+    <title>Sign In | SmartPark AI — Intelligent Parking Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/pages.css" />
-  </head>
-  <body class="auth-body">
-    <main class="auth-layout">
-      <div class="auth-container">
-        <section class="auth-panel">
-          <header class="auth-header">
-            <a class="brand" href="login.html">
-              <span class="brand-icon">P</span>
-              <span class="brand-text">SmartPark <small>AI PARKING SYSTEM</small></span>
-            </a>
-            <button
-              type="button"
-              class="theme-toggle-btn"
-              id="theme-toggle"
-              title="Toggle Monotone Style (Dark/Light)"
-              aria-label="Toggle Monotone Style"
-            >
-              <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-              </svg>
-              <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            </button>
-          </header>
+    <style>
+      /* Clean Modern Fullscreen Multi-Color Layout */
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      }
 
-          <div class="auth-title-block">
-            <span class="eyebrow">SMARTER PARKING STARTS HERE</span>
-            <h1 class="auth-title">Welcome back.</h1>
-            <p class="auth-subtitle">
-              Sign in to find parking, reserve a slot, and manage your journeys.
+      /* Standard Webpage Header */
+      .site-header {
+        background: rgba(251, 249, 245, 0.95);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 1.5rem;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+
+      .site-header-inner {
+        max-width: 1300px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand-box {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--text);
+      }
+
+      .brand-badge {
+        width: 38px;
+        height: 38px;
+        background-color: #0f172a;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+      }
+
+      .brand-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .brand-tag {
+        background-color: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 9999px;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-link {
+        color: var(--text-light);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: color 0.15s ease;
+      }
+      .header-link:hover { color: var(--primary); }
+
+      .btn-header-register {
+        background-color: var(--primary);
+        color: #ffffff;
+        padding: 0.55rem 1.15rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.875rem;
+        transition: background 0.15s ease;
+      }
+      .btn-header-register:hover { background-color: var(--primary-hover); }
+
+      /* Fullscreen Center Content Area */
+      .auth-main-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .auth-fullscreen-card {
+        width: 100%;
+        max-width: 1100px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        display: grid;
+        grid-template-columns: 1fr 1.05fr;
+        overflow: hidden;
+      }
+
+      @media (max-width: 860px) {
+        .auth-fullscreen-card {
+          grid-template-columns: 1fr;
+        }
+        .auth-showcase-panel {
+          display: none;
+        }
+      }
+
+      /* Left Form Panel */
+      .auth-form-panel {
+        padding: 3.5rem 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      @media (max-width: 600px) {
+        .auth-form-panel {
+          padding: 2rem 1.5rem;
+        }
+      }
+
+      /* Right Showcase Panel */
+      .auth-showcase-panel {
+        background: var(--surface-alt);
+        border-left: 1px solid var(--border);
+        padding: 3.5rem 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      /* Vertical Input Alignment */
+      .input-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .input-block label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .input-field-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-field-wrapper svg {
+        position: absolute;
+        left: 1rem;
+        color: #94a3b8;
+        pointer-events: none;
+      }
+
+      .auth-input {
+        width: 100%;
+        padding: 0.85rem 1rem 0.85rem 2.85rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--text);
+        background: #ffffff;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        outline: none;
+        box-sizing: border-box;
+        transition: all 0.15s ease;
+      }
+
+      .auth-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      }
+
+      .toggle-pass-btn {
+        position: absolute;
+        right: 0.85rem;
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Submit Button */
+      .btn-submit-login {
+        width: 100%;
+        background-color: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 0.95rem;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.15s ease;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .btn-submit-login:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+      }
+      .btn-submit-login:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Standard Webpage Footer */
+      .site-footer {
+        background-color: #ffffff;
+        border-top: 1px solid var(--border);
+        padding: 2.5rem 1.5rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .site-footer-inner {
+        max-width: 1300px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Standard Header -->
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a href="login.html" class="brand-box">
+          <div class="brand-badge">P</div>
+          <div>
+            <div class="brand-title">
+              SmartPark <span class="brand-tag">AI LIVE</span>
+            </div>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.825rem; font-weight: 700; color: #065f46; background: #ecfdf5; padding: 4px 10px; border-radius: 9999px; border: 1px solid #a7f3d0;">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            Atlas Connected
+          </span>
+          <a href="register.html" class="btn-header-register">Create Account</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Fullscreen Auth Wrapper -->
+    <main class="auth-main-wrapper">
+      <div class="auth-fullscreen-card">
+        <!-- Form Panel -->
+        <section class="auth-form-panel">
+          <div style="margin-bottom: 2rem;">
+            <span style="font-size: 0.775rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.06em;">
+              DRIVER PORTAL
+            </span>
+            <h1 style="font-size: 2rem; font-weight: 800; color: var(--text); margin: 0.35rem 0 0.5rem 0; letter-spacing: -0.02em;">
+              Welcome back.
+            </h1>
+            <p style="font-size: 0.925rem; color: var(--muted); margin: 0; line-height: 1.5;">
+              Sign in to manage your reserved bays, view live countdown passes, and access RFID gate telemetry.
             </p>
           </div>
 
-          <form id="login-form" class="auth-form" novalidate>
-            <!-- Vertical Field 1: Email Address -->
-            <div class="form-group">
-              <label for="email" class="form-label">Email address</label>
-              <div class="input-wrapper">
-                <span class="input-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </span>
+          <!-- Dynamic Error Alert Banner Container -->
+          <div id="auth-error-banner" style="display: none;"></div>
+
+          <form id="login-form" novalidate>
+            <!-- 1. Email Address (Vertical) -->
+            <div class="input-block">
+              <label for="email">
+                <span>Email Address</span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
                 <input
+                  type="email"
                   id="email"
                   name="email"
-                  type="email"
-                  class="form-control"
-                  placeholder="you@example.com"
+                  class="auth-input"
+                  placeholder="driver@smartpark.ai"
                   autocomplete="email"
                   required
                 />
               </div>
             </div>
 
-            <!-- Vertical Field 2: Password -->
-            <div class="form-group">
-              <div class="label-row">
-                <label for="password" class="form-label">Password</label>
-                <a href="#" class="forgot-link" id="forgot-password-link">Forgot password?</a>
-              </div>
-              <div class="input-wrapper">
-                <span class="input-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                  </svg>
-                </span>
+            <!-- 2. Password (Vertical) -->
+            <div class="input-block" style="margin-bottom: 1rem;">
+              <label for="password">
+                <span>Password</span>
+                <a href="#" id="forgot-password-link" style="color: var(--primary); text-decoration: none; font-size: 0.8rem; font-weight: 600;">Forgot password?</a>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
                 <input
+                  type="password"
                   id="password"
                   name="password"
-                  type="password"
-                  class="form-control has-toggle"
-                  placeholder="Enter your password"
+                  class="auth-input"
+                  placeholder="••••••••••••"
                   autocomplete="current-password"
                   required
                 />
-                <button
-                  type="button"
-                  class="password-toggle"
-                  id="toggle-password"
-                  aria-label="Show password"
-                  title="Show/Hide password"
-                >
-                  <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button type="button" class="toggle-pass-btn" id="toggle-password" aria-label="Toggle password visibility">
+                  <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                     <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <svg class="eye-hide" style="display:none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                    <line x1="2" y1="2" x2="22" y2="22"></line>
                   </svg>
                 </button>
               </div>
             </div>
 
-            <!-- Vertical Field 3: Remember Option -->
-            <div class="form-options">
-              <label class="remember-label">
-                <input type="checkbox" id="remember-me" name="remember" checked />
+            <!-- Keep signed in -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; font-size: 0.85rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--muted);">
+                <input type="checkbox" id="remember-me" name="remember" checked style="width: 17px; height: 17px; accent-color: var(--primary); cursor: pointer;" />
                 <span>Keep me signed in</span>
               </label>
+              <span style="color: var(--muted); font-size: 0.8rem;">🔒 256-Bit SSL</span>
             </div>
 
-            <!-- Vertical Field 4: Submit Button -->
-            <button class="btn btn-primary btn-block submit-btn" type="submit" id="submit-btn">
-              <span>Sign in →</span>
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit-login" id="submit-btn">
+              <span>Sign In to Dashboard</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
             </button>
 
-            <!-- Vertical Field 5: Quick Demo Fill -->
-            <div class="demo-credentials-box">
-              <div class="demo-info">
-                <span class="demo-badge">Quick Demo Access</span>
-                <span class="demo-text">user@smartpark.ai · password123</span>
+            <!-- Quick Demo Credentials Box -->
+            <div style="margin-top: 1.75rem; padding: 1rem; background: var(--bg-subtle); border: 1px dashed var(--border); border-radius: 12px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">
+                <span>Verified Demo Accounts</span>
+                <span>Click to Fill</span>
               </div>
-              <button type="button" class="btn-demo-fill" id="btn-demo-fill">Auto-fill</button>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" id="btn-demo-driver" style="font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.65rem; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; cursor: pointer;">
+                  👤 Driver: user@smartpark.ai
+                </button>
+                <button type="button" id="btn-demo-admin" style="font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.65rem; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; cursor: pointer;">
+                  🛡️ Admin: admin@smartpark.ai
+                </button>
+              </div>
             </div>
           </form>
 
-          <footer class="auth-footer">
-            <p class="auth-footer-text">
-              Don't have an account? <a href="register.html" class="auth-link">Create one</a>
-            </p>
-            <div class="security-note">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              <span>SmartPark AI · Intelligent Parking Management</span>
-            </div>
-          </footer>
+          <div style="margin-top: 2rem; font-size: 0.9rem; text-align: center; color: var(--muted);">
+            Don't have an account? <a href="register.html" style="color: var(--primary); font-weight: 700; text-decoration: none;">Create one now</a>
+          </div>
         </section>
 
-        <!-- Desktop Visual Side Panel -->
-        <aside class="auth-visual">
-          <span class="eyebrow">PARK SMARTER</span>
-          <h2>Your parking.<br />Under control.</h2>
-          <p>Discover available spaces and make every journey smoother with AI-guided parking.</p>
-          <div class="hero-card">
-            <div class="road-visual">
-              <span class="car-dot"></span>
-              <span class="car-dot active"></span>
-              <span class="car-dot"></span>
+        <!-- Right Showcase Panel -->
+        <aside class="auth-showcase-panel">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.25rem 0.65rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; color: #065f46; margin-bottom: 1.25rem;">
+              ⚡ REAL-TIME SMART PARKING
             </div>
-            <div class="flex-between">
-              <span>Smart parking network</span>
-              <span class="badge badge-success">READY</span>
+
+            <h2 style="font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1.25; margin: 0 0 1rem 0;">
+              Your parking.<br />
+              <span style="color: var(--primary);">Under control.</span>
+            </h2>
+
+            <p style="font-size: 0.95rem; color: var(--muted); line-height: 1.6; margin: 0 0 2rem 0;">
+              Discover available bays in real-time, reserve EV charging spaces, and experience touchless RFID boom barrier access.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.9rem; font-weight: 600; color: var(--text);">
+                <span style="color: #10b981; font-weight: 800;">✓</span> 84 Bays Connected Across 4 Garages
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.9rem; font-weight: 600; color: var(--text);">
+                <span style="color: #10b981; font-weight: 800;">✓</span> Instant RFID Card & Plate Verification
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.9rem; font-weight: 600; color: var(--text);">
+                <span style="color: #10b981; font-weight: 800;">✓</span> 30-Minute Grace Period Auto-Refund Policy
+              </div>
             </div>
-            <div class="mini-stats-row">
-              <div class="mini-stat">
-                <span class="mini-stat-val">128</span>
-                <span class="mini-stat-lbl">Live Slots</span>
-              </div>
-              <div class="mini-stat">
-                <span class="mini-stat-val">99.4%</span>
-                <span class="mini-stat-lbl">Accuracy</span>
-              </div>
-              <div class="mini-stat">
-                <span class="mini-stat-val">2.1m</span>
-                <span class="mini-stat-lbl">Avg Park</span>
-              </div>
+          </div>
+
+          <!-- Bottom Metric -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1.25rem; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; margin-top: 2rem;">
+            <div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--text);">84</div>
+              <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: 700;">Live Bay Capacity</div>
+            </div>
+            <div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;">99.8%</div>
+              <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: 700;">RFID Gate Uptime</div>
             </div>
           </div>
         </aside>
       </div>
     </main>
 
+    <!-- Standard Webpage Footer -->
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <div>
+          © 2026 SmartPark AI Technologies. Full-Stack MERN Edition.
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <span>Cluster: MongoDB Atlas (Cluster0)</span>
+          <span>Security: 256-Bit SSL</span>
+          <span>Status: All Hubs Active</span>
+        </div>
+      </div>
+    </footer>
+
     <script src="js/api.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+      // Demo Credentials Auto-Fill
+      const driverFill = document.getElementById('btn-demo-driver');
+      const adminFill = document.getElementById('btn-demo-admin');
+      if (driverFill) {
+        driverFill.addEventListener('click', () => {
+          document.getElementById('email').value = 'user@smartpark.ai';
+          document.getElementById('password').value = 'password123';
+        });
+      }
+      if (adminFill) {
+        adminFill.addEventListener('click', () => {
+          document.getElementById('email').value = 'admin@smartpark.ai';
+          document.getElementById('password').value = 'admin123';
+        });
+      }
+
+      // Password toggle
+      const toggleBtn = document.getElementById('toggle-password');
+      const passInput = document.getElementById('password');
+      if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', () => {
+          const isPass = passInput.type === 'password';
+          passInput.type = isPass ? 'text' : 'password';
+        });
+      }
+    </script>
   </body>
 </html>
-

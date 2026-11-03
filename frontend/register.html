@@ -3,184 +3,455 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0d121c" />
-    <title>Create Account | SmartPark AI</title>
+    <title>Create Your SmartPark Account | Intelligent Parking Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/pages.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      }
+
+      .site-header {
+        background: rgba(251, 249, 245, 0.95);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 1.5rem;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+
+      .site-header-inner {
+        max-width: 1300px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand-box {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--text);
+      }
+
+      .brand-badge {
+        width: 38px;
+        height: 38px;
+        background-color: #0f172a;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+      }
+
+      .brand-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .brand-tag {
+        background-color: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 9999px;
+      }
+
+      .auth-main-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .register-fullscreen-card {
+        width: 100%;
+        max-width: 900px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        padding: 3.5rem 3rem;
+        box-sizing: border-box;
+      }
+
+      @media (max-width: 650px) {
+        .register-fullscreen-card {
+          padding: 2rem 1.25rem;
+        }
+      }
+
+      .form-grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 2rem;
+        row-gap: 1.25rem;
+        margin-bottom: 2rem;
+      }
+
+      @media (max-width: 720px) {
+        .form-grid-2col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .input-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+
+      .input-block label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .input-field-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-field-wrapper svg {
+        position: absolute;
+        left: 1rem;
+        color: #94a3b8;
+        pointer-events: none;
+      }
+
+      .auth-input {
+        width: 100%;
+        padding: 0.85rem 1rem 0.85rem 2.85rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--text);
+        background: #ffffff;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        outline: none;
+        box-sizing: border-box;
+        transition: all 0.15s ease;
+      }
+
+      .auth-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      }
+
+      .btn-submit-register {
+        width: 100%;
+        background-color: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 1rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.15s ease;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .btn-submit-register:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+      }
+
+      .site-footer {
+        background-color: #ffffff;
+        border-top: 1px solid var(--border);
+        padding: 2.5rem 1.5rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .site-footer-inner {
+        max-width: 1300px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    </style>
   </head>
-  <body class="auth-body">
-    <main class="auth-layout">
-      <div class="auth-container">
-        <section class="auth-panel">
-          <header class="auth-header">
-            <a class="brand" href="login.html">
-              <span class="brand-icon">P</span>
-              <span class="brand-text">SmartPark <small>AI PARKING SYSTEM</small></span>
-            </a>
-            <button
-              type="button"
-              class="theme-toggle-btn"
-              id="theme-toggle"
-              title="Toggle Monotone Style (Dark/Light)"
-              aria-label="Toggle Monotone Style"
-            >
-              <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-              </svg>
-              <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            </button>
-          </header>
-
-          <div class="auth-title-block">
-            <span class="eyebrow">JOIN SMARTPARK</span>
-            <h1 class="auth-title">Create your account.</h1>
-            <p class="auth-subtitle">Start discovering and reserving parking spaces.</p>
+  <body>
+    <!-- Standard Header -->
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a href="login.html" class="brand-box">
+          <div class="brand-badge">P</div>
+          <div>
+            <div class="brand-title">
+              SmartPark <span class="brand-tag">MERN V2</span>
+            </div>
           </div>
+        </a>
 
-          <form id="register-form" class="auth-form" novalidate>
-            <!-- Vertical Field 1: Full Name -->
-            <div class="form-group">
-              <label for="name" class="form-label">Full name</label>
-              <div class="input-wrapper">
-                <span class="input-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </span>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 0.85rem; color: var(--muted);">Already have an account?</span>
+          <a href="login.html" style="background: #ffffff; border: 1.5px solid var(--border); color: var(--text); padding: 0.45rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.85rem;">
+            Log In
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Registration Card -->
+    <main class="auth-main-wrapper">
+      <div class="register-fullscreen-card">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+          <span style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 9999px;">
+            NEW DRIVER REGISTRATION
+          </span>
+          <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text); margin: 0.65rem 0 0.35rem 0; letter-spacing: -0.02em;">
+            Create Your SmartPark Account
+          </h1>
+          <p style="font-size: 0.975rem; color: var(--muted); margin: 0 auto; max-width: 600px;">
+            Register your vehicle plate and RFID tag for automated boom barrier entry and instant parking reservation.
+          </p>
+        </div>
+
+        <form id="register-form" novalidate>
+          <div class="form-grid-2col">
+            <!-- 1. Full Name -->
+            <div class="input-block">
+              <label for="fullName">
+                <span>1. Full Name *</span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
                 <input
-                  id="name"
-                  name="name"
                   type="text"
-                  class="form-control"
-                  placeholder="Your full name"
-                  autocomplete="name"
+                  id="fullName"
+                  name="fullName"
+                  class="auth-input"
+                  placeholder="e.g. David Hasselhoff"
                   required
                 />
               </div>
             </div>
 
-            <!-- Vertical Field 2: Email Address -->
-            <div class="form-group">
-              <label for="email" class="form-label">Email address</label>
-              <div class="input-wrapper">
-                <span class="input-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </span>
+            <!-- 2. Email Address -->
+            <div class="input-block">
+              <label for="email">
+                <span>2. Email Address *</span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
                 <input
+                  type="email"
                   id="email"
                   name="email"
-                  type="email"
-                  class="form-control"
-                  placeholder="you@example.com"
-                  autocomplete="email"
+                  class="auth-input"
+                  placeholder="driver@smartpark.ai"
                   required
                 />
               </div>
             </div>
 
-            <!-- Vertical Field 3: Password -->
-            <div class="form-group">
-              <label for="password" class="form-label">Password</label>
-              <div class="input-wrapper">
-                <span class="input-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                  </svg>
-                </span>
+            <!-- 3. Phone Number -->
+            <div class="input-block">
+              <label for="phone">
+                <span>3. Phone Number *</span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
                 <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="auth-input"
+                  placeholder="+1 (555) 234-5678"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- 4. Vehicle Number -->
+            <div class="input-block">
+              <label for="vehicleNumber">
+                <span>4. Vehicle Number (Plate) *</span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                  <circle cx="7" cy="17" r="2"></circle>
+                  <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+                <input
+                  type="text"
+                  id="vehicleNumber"
+                  name="vehicleNumber"
+                  class="auth-input"
+                  style="text-transform: uppercase; font-family: 'JetBrains Mono', monospace;"
+                  placeholder="e.g. KITT-2000"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- 5. RFID Tag Number -->
+            <div class="input-block">
+              <label for="rfid">
+                <span>5. RFID Number *</span>
+                <span id="btn-auto-rfid" style="font-size: 0.785rem; color: var(--primary); font-weight: 700; cursor: pointer;">
+                  ⚡ Auto-Assign
+                </span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="2"></circle>
+                  <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path>
+                </svg>
+                <input
+                  type="text"
+                  id="rfid"
+                  name="rfid"
+                  class="auth-input"
+                  style="text-transform: uppercase; font-family: 'JetBrains Mono', monospace;"
+                  placeholder="e.g. RF-882910"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Hardware note -->
+            <div style="display: flex; align-items: center; padding: 0.5rem 0;">
+              <div style="padding: 0.75rem 1rem; background: var(--bg-subtle); border-radius: 10px; font-size: 0.8rem; color: var(--muted); border: 1px solid var(--border); width: 100%;">
+                ℹ️ <strong>Hardware Sync:</strong> Your RFID card and Vehicle License Plate are registered directly in MongoDB Atlas for touchless gate access.
+              </div>
+            </div>
+
+            <!-- 6. Password -->
+            <div class="input-block">
+              <label for="password">
+                <span>6. Password *</span>
+              </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <input
+                  type="password"
                   id="password"
                   name="password"
-                  type="password"
-                  class="form-control has-toggle"
-                  placeholder="Create a password (min. 8 characters)"
-                  minlength="8"
-                  autocomplete="new-password"
+                  class="auth-input"
+                  placeholder="At least 6 characters"
                   required
                 />
-                <button
-                  type="button"
-                  class="password-toggle"
-                  id="toggle-password"
-                  aria-label="Show password"
-                  title="Show/Hide password"
-                >
-                  <svg class="eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <svg class="eye-hide" style="display:none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                    <line x1="2" y1="2" x2="22" y2="22"></line>
-                  </svg>
-                </button>
               </div>
             </div>
 
-            <!-- Vertical Field 4: Terms check -->
-            <div class="form-options">
-              <label class="remember-label">
-                <input type="checkbox" id="agree-terms" name="terms" required checked />
-                <span>I agree to terms and privacy policy</span>
+            <!-- 7. Confirm Password -->
+            <div class="input-block">
+              <label for="confirmPassword">
+                <span>7. Confirm Password *</span>
               </label>
+              <div class="input-field-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="auth-input"
+                  placeholder="Re-enter password"
+                  required
+                />
+              </div>
             </div>
-
-            <!-- Vertical Field 5: Submit button -->
-            <button class="btn btn-primary btn-block submit-btn" type="submit" id="submit-btn">
-              <span>Create account →</span>
-            </button>
-          </form>
-
-          <footer class="auth-footer">
-            <p class="auth-footer-text">
-              Already registered? <a href="login.html" class="auth-link">Sign in</a>
-            </p>
-            <div class="security-note">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              <span>SmartPark AI · Intelligent Parking Management</span>
-            </div>
-          </footer>
-        </section>
-
-        <!-- Desktop Visual Side Panel -->
-        <aside class="auth-visual">
-          <span class="eyebrow">A BETTER WAY TO PARK</span>
-          <h2>Less searching.<br />More moving.</h2>
-          <p>Manage your parking journey from one convenient dashboard.</p>
-          <div class="hero-card">
-            <h3>One place for your journey</h3>
-            <p>Find spaces · Book slots · Track parking</p>
           </div>
-        </aside>
+
+          <button type="submit" class="btn-submit-register" id="submit-btn">
+            <span>Create Account & Register Driver</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+        </form>
+
+        <div style="margin-top: 2rem; text-align: center; font-size: 0.9rem; color: var(--muted); border-top: 1px solid var(--border); paddingTop: 1.5rem;">
+          Already have an account? <a href="login.html" style="color: var(--primary); font-weight: 700; text-decoration: none;">Log in</a>
+        </div>
       </div>
     </main>
+
+    <!-- Standard Webpage Footer -->
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <div>
+          © 2026 SmartPark AI Technologies. Full-Stack MERN Edition.
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <span>Cluster: MongoDB Atlas (Cluster0)</span>
+          <span>Security: 256-Bit SSL</span>
+          <span>Status: Verified</span>
+        </div>
+      </div>
+    </footer>
 
     <script src="js/api.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+      // Auto-assign random RFID tag
+      const autoRfid = document.getElementById('btn-auto-rfid');
+      if (autoRfid) {
+        autoRfid.addEventListener('click', () => {
+          const num = Math.floor(100000 + Math.random() * 900000);
+          document.getElementById('rfid').value = 'RF-' + num;
+        });
+      }
+    </script>
   </body>
 </html>
-

@@ -20,6 +20,20 @@ const server = app.listen(PORT, async () => {
   startLateArrivalJob();
 });
 
+// Graceful error handling for busy ports
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n[Server Alert] Port ${PORT} is already in use by another running process.`);
+    console.error(`Quick fix in PowerShell:`);
+    console.error(`  Stop-Process -Id (Get-NetTCPConnection -LocalPort ${PORT}).OwningProcess -Force`);
+    console.error(`Or change PORT in backend/.env (e.g., PORT=5001)\n`);
+    process.exit(1);
+  } else {
+    console.error('[Server Error]', err);
+    process.exit(1);
+  }
+});
+
 // Handle graceful shutdown
 const shutdown = () => {
   console.log('\n[Server] Shutting down gracefully...');

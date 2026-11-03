@@ -1,22 +1,20 @@
 /*
- * SmartPark API helper.
- *
- * The backend will run on port 5000 during local development.
- * Change API_BASE_URL if your friend uses a different address.
- *
- * Never put database passwords or private secrets in frontend files.
+ * SmartPark API client
+ * Connects frontend to Express backend on port 5000
  */
 
 const API_BASE_URL = "http://localhost:5000/api";
 
 async function apiRequest(endpoint, options = {}) {
+  const token = localStorage.getItem("smartpark_token");
+  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     credentials: "include",
     ...options,
-
     headers: {
       ...(options.body ? { "Content-Type": "application/json" } : {}),
-
+      ...authHeaders,
       ...(options.headers || {}),
     },
   });
